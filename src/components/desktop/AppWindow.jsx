@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useDragControls } from 'framer-motion';
 
 const AppWindow = ({
   title = 'Untitled',
@@ -10,19 +10,20 @@ const AppWindow = ({
   initialPosition = { x: 100, y: 100 },
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [position, setPosition] = useState(initialPosition);
   const [dragging, setDragging] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
   const nodeRef = useRef(null);
+  const dragControls = useDragControls();
 
   const handleDragStart = (event, info) => setDragging(true);
   const handleDragEnd = (event, info) => {
     setDragging(false);
-    // Update position based on drag movement
-    setPosition((prev) => ({
-      x: prev.x + info.offset.x,
-      y: prev.y + info.offset.y,
-    }));
+  };
+
+  const startDrag = (event) => {
+    if (!isFullscreen) {
+      dragControls.start(event);
+    }
   };
 
   const toggleFullscreen = () => {
@@ -32,8 +33,8 @@ const AppWindow = ({
 
   const windowStyle = {
     position: 'absolute',
-    top: isFullscreen ? '48px' : position.y,
-    left: isFullscreen ? 0 : position.x,
+    top: isFullscreen ? '48px' : initialPosition.y,
+    left: isFullscreen ? 0 : initialPosition.x,
     width: isFullscreen ? '100vw' : 600,
     height: isFullscreen ? 'calc(100vh - 48px)' : 'auto',
     borderRadius: isFullscreen ? 0 : '12px',
@@ -41,23 +42,24 @@ const AppWindow = ({
     backdropFilter: 'blur(12px)',
     boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
     overflow: 'hidden',
-    transition: 'all 0.3s ease',
     zIndex: 10,
   };
 
   return (
-    <div
+    <motion.div
       ref={nodeRef}
+      drag
+      dragControls={dragControls}
+      dragListener={false}
+      dragMomentum={false}
+      dragElastic={0}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       style={windowStyle}
     >
-      <motion.div
+      <div
         className="window-header"
-        drag={!isFullscreen}
-        dragMomentum={false}
-        dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        dragElastic={0}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+        onPointerDown={startDrag}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -152,7 +154,7 @@ const AppWindow = ({
         >
           {title}
         </span>
-      </motion.div>
+      </div>
 
       <div
         className="window-content"
@@ -163,7 +165,7 @@ const AppWindow = ({
       >
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
