@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Wallpaper from './Wallpaper'
 import MenuBar from '../desktop/MenuBar'
 import Dock from '../desktop/Dock'
 import CursorGlow from './CursorGlow'
 import ThemeToggle from './ThemeToggle'
 import AssistiveTouch from './AssistiveTouch'
+import AppWindow from '../desktop/AppWindow'
+import About from '../../apps/About'
 
 export default function Layout({ children }){
+  const [openWindows, setOpenWindows] = useState([]);
+
+  const appComponents = {
+    bio: About,
+    about: About,
+  };
+
+  const handleAppClick = (app) => {
+    // Check if window is already open
+    const isOpen = openWindows.find(w => w.id === app.name);
+    if (isOpen) return;
+
+    // Open new window
+    setOpenWindows([...openWindows, {
+      id: app.name,
+      title: app.name,
+      component: appComponents[app.iconKey] || null,
+      position: { x: 100 + openWindows.length * 30, y: 100 + openWindows.length * 30 }
+    }]);
+  };
+
+  const handleCloseWindow = (windowId) => {
+    setOpenWindows(openWindows.filter(w => w.id !== windowId));
+  };
+
   const handleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
@@ -32,6 +59,23 @@ export default function Layout({ children }){
       {/* Main content area - leave space for the menu bar */}
       <main className="relative z-10 pt-12 pb-24 px-4 md:px-8">
         {children}
+
+        {/* Render open windows */}
+        {openWindows.map((window) => {
+          const WindowComponent = window.component;
+          return (
+            <AppWindow
+              key={window.id}
+              title={window.title}
+              initialPosition={window.position}
+              onClose={() => handleCloseWindow(window.id)}
+              onMinimize={() => console.log(`Minimize ${window.id}`)}
+              onFullscreen={() => console.log(`Fullscreen ${window.id}`)}
+            >
+              {WindowComponent ? <WindowComponent /> : <div>Component not found</div>}
+            </AppWindow>
+          );
+        })}
       </main>
 
       {/* Dock sits above wallpaper at the bottom */}
@@ -40,15 +84,16 @@ export default function Layout({ children }){
           {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
           <Dock
             apps={[
-              { name: 'Bio', iconKey: 'bio' },
-              { name: 'Projects', iconKey: 'projects' },
-              { name: 'Terminal', iconKey: 'terminal' },
-              { name: 'Gallery', iconKey: 'gallery' },
-              { name: 'Contact', iconKey: 'contact' },
-              { name: 'About', iconKey: 'about' },
-              { name: 'Finder', iconKey: 'finder' },
-              { name: 'Settings', iconKey: 'settings' },
+              { id: 'bio', name: 'Bio', iconKey: 'bio' },
+              { id: 'projects', name: 'Projects', iconKey: 'projects' },
+              { id: 'terminal', name: 'Terminal', iconKey: 'terminal' },
+              { id: 'gallery', name: 'Gallery', iconKey: 'gallery' },
+              { id: 'contact', name: 'Contact', iconKey: 'contact' },
+              { id: 'about', name: 'About', iconKey: 'about' },
+              { id: 'finder', name: 'Finder', iconKey: 'finder' },
+              { id: 'settings', name: 'Settings', iconKey: 'settings' },
             ]}
+            onAppClick={handleAppClick}
           />
         </div>
       </footer>
