@@ -47,7 +47,7 @@ export default function Layout({ children }){
   };
 
   return (
-    <div className="app-layout min-h-screen min-w-screen relative text-white">
+    <div className="app-layout min-h-screen min-w-screen relative text-white overflow-hidden">
       {/* Wallpaper is fixed and sits underneath everything */}
       <Wallpaper />
 
