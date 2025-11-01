@@ -6,7 +6,9 @@ import CursorGlow from './CursorGlow'
 import ThemeToggle from './ThemeToggle'
 import AssistiveTouch from './AssistiveTouch'
 import AppWindow from '../desktop/AppWindow'
+import HomeScreen from '../desktop/HomeScreen'
 import About from '../../apps/About'
+import { DOCK_APPS } from '../../data/apps'
 
 export default function Layout({ children }){
   const [openWindows, setOpenWindows] = useState([]);
@@ -75,8 +77,9 @@ export default function Layout({ children }){
       </header>
 
       {/* Main content area - leave space for the menu bar */}
-      <main className="relative z-10 pt-12 pb-24 px-4 md:px-8">
-        {children}
+      <main className="relative z-10 pt-12 pb-24 h-screen">
+        {/* Home Screen with apps */}
+        <HomeScreen onAppClick={handleAppClick} />
 
         {/* Render open windows */}
         {openWindows.map((window) => {
@@ -106,16 +109,7 @@ export default function Layout({ children }){
         <div className="flex justify-center pointer-events-auto">
           {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
           <Dock
-            apps={[
-              { id: 'bio', name: 'Bio', iconKey: 'bio' },
-              { id: 'projects', name: 'Projects', iconKey: 'projects' },
-              { id: 'terminal', name: 'Terminal', iconKey: 'terminal' },
-              { id: 'gallery', name: 'Gallery', iconKey: 'gallery' },
-              { id: 'contact', name: 'Contact', iconKey: 'contact' },
-              { id: 'about', name: 'About', iconKey: 'about' },
-              { id: 'finder', name: 'Finder', iconKey: 'finder' },
-              { id: 'settings', name: 'Settings', iconKey: 'settings' },
-            ]}
+            apps={DOCK_APPS}
             onAppClick={handleAppClick}
           />
         </div>
