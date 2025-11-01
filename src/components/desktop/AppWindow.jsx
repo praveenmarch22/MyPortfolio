@@ -48,13 +48,17 @@ const AppWindow = ({
   return (
     <motion.div
       ref={nodeRef}
-      drag
+      drag={!isFullscreen}
       dragControls={dragControls}
       dragListener={false}
       dragMomentum={false}
       dragElastic={0}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      animate={{
+        x: isFullscreen ? 0 : undefined,
+        y: isFullscreen ? 0 : undefined,
+      }}
       style={windowStyle}
     >
       <div
@@ -90,7 +94,6 @@ const AppWindow = ({
               color: hoveredButton === 'close' ? '#4a0000' : 'transparent',
               transition: 'color 0.2s',
               lineHeight: '12px',
-              paddingTop: '1px',
             }}
           >
             ×
@@ -114,7 +117,6 @@ const AppWindow = ({
               color: hoveredButton === 'minimize' ? '#5a3a00' : 'transparent',
               transition: 'color 0.2s',
               lineHeight: '12px',
-              paddingBottom: '2px',
             }}
           >
             −
