@@ -32,10 +32,10 @@ const AppWindow = ({
 
   const windowStyle = {
     position: 'absolute',
-    top: isFullscreen ? 0 : position.y,
+    top: isFullscreen ? '48px' : position.y,
     left: isFullscreen ? 0 : position.x,
     width: isFullscreen ? '100vw' : 600,
-    height: isFullscreen ? '100vh' : 'auto',
+    height: isFullscreen ? 'calc(100vh - 48px)' : 'auto',
     borderRadius: isFullscreen ? 0 : '12px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     backdropFilter: 'blur(12px)',

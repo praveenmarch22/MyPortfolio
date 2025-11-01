@@ -10,6 +10,8 @@ import About from '../../apps/About'
 
 export default function Layout({ children }){
   const [openWindows, setOpenWindows] = useState([]);
+  const [isDockVisible, setIsDockVisible] = useState(true);
+  const [mouseY, setMouseY] = useState(0);
 
   const appComponents = {
     bio: About,
@@ -34,6 +36,19 @@ export default function Layout({ children }){
     setOpenWindows(openWindows.filter(w => w.id !== windowId));
   };
 
+  const handleMouseMove = (e) => {
+    setMouseY(e.clientY);
+    // Show dock when mouse is near bottom and there are open windows
+    if (openWindows.length > 0) {
+      const windowHeight = window.innerHeight;
+      if (e.clientY > windowHeight - 100) {
+        setIsDockVisible(true);
+      } else {
+        setIsDockVisible(false);
+      }
+    }
+  };
+
   const handleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
@@ -47,7 +62,10 @@ export default function Layout({ children }){
   };
 
   return (
-    <div className="app-layout min-h-screen min-w-screen relative text-white overflow-hidden">
+    <div 
+      className="app-layout min-h-screen min-w-screen relative text-white overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
       {/* Wallpaper is fixed and sits underneath everything */}
       <Wallpaper />
 
@@ -79,7 +97,12 @@ export default function Layout({ children }){
       </main>
 
       {/* Dock sits above wallpaper at the bottom */}
-      <footer className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none">
+      <footer 
+        className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none transition-transform duration-300 ease-in-out"
+        style={{
+          transform: openWindows.length > 0 && !isDockVisible ? 'translateY(150%)' : 'translateY(0)'
+        }}
+      >
         <div className="flex justify-center pointer-events-auto">
           {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
           <Dock
