@@ -92,6 +92,7 @@ function DockIcon({ app, mouseX, containerRef, onClick }) {
   return (
     <div
       ref={iconRef}
+      data-app-id={app.id}
       className="relative flex flex-col items-center cursor-pointer select-none"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}

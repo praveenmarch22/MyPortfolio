@@ -8,10 +8,12 @@ const AppWindow = ({
   onMinimize,
   onFullscreen,
   initialPosition = { x: 100, y: 100 },
+  appId,
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
   const nodeRef = useRef(null);
   const dragControls = useDragControls();
 
@@ -24,6 +26,31 @@ const AppWindow = ({
     if (!isFullscreen) {
       dragControls.start(event);
     }
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    // Wait for animation to complete before calling onClose
+    setTimeout(() => {
+      onClose && onClose();
+    }, 400);
+  };
+
+  const getDockIconPosition = () => {
+    // Try to find the dock icon for this app
+    const dockIcon = document.querySelector(`[data-app-id="${appId}"]`);
+    if (dockIcon) {
+      const rect = dockIcon.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      };
+    }
+    // Fallback to bottom center if dock icon not found
+    return {
+      x: window.innerWidth / 2,
+      y: window.innerHeight - 50,
+    };
   };
 
   const toggleFullscreen = () => {
@@ -45,20 +72,42 @@ const AppWindow = ({
     zIndex: 10,
   };
 
+  const dockPosition = isClosing ? getDockIconPosition() : null;
+
   return (
     <motion.div
       ref={nodeRef}
-      drag={!isFullscreen}
+      drag={!isFullscreen && !isClosing}
       dragControls={dragControls}
       dragListener={false}
       dragMomentum={false}
       dragElastic={0}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      animate={{
-        x: isFullscreen ? 0 : undefined,
-        y: isFullscreen ? 0 : undefined,
-      }}
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={
+        isClosing
+          ? {
+              x: dockPosition ? dockPosition.x - initialPosition.x : 0,
+              y: dockPosition ? dockPosition.y - initialPosition.y : window.innerHeight,
+              scale: 0,
+              opacity: 0,
+              transition: {
+                duration: 0.4,
+                ease: [0.4, 0, 0.2, 1],
+              },
+            }
+          : {
+              x: isFullscreen ? 0 : undefined,
+              y: isFullscreen ? 0 : undefined,
+              scale: 1,
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: [0.4, 0, 0.2, 1],
+              },
+            }
+      }
       style={windowStyle}
     >
       <div
@@ -76,7 +125,7 @@ const AppWindow = ({
       >
         <div style={{ display: 'flex', gap: '8px', marginRight: '8px' }}>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             onMouseEnter={() => setHoveredButton('close')}
             onMouseLeave={() => setHoveredButton(null)}
             style={{

@@ -87,6 +87,7 @@ export default function Layout({ children }){
           return (
             <AppWindow
               key={window.id}
+              appId={window.id}
               title={window.title}
               initialPosition={window.position}
               onClose={() => handleCloseWindow(window.id)}
