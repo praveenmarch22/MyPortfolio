@@ -107,7 +107,27 @@ export default function Layout({ children }){
               onMinimize={() => console.log(`Minimize ${window.id}`)}
               onFullscreen={() => console.log(`Fullscreen ${window.id}`)}
             >
-              {WindowComponent ? <WindowComponent /> : <div>Component not found</div>}
+              {WindowComponent ? <WindowComponent /> :<div className="flex flex-col items-center justify-center text-gray-700 py-12">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-16 h-16 mb-4 text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                >
+                    <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+                <p className="text-lg font-medium">These apps are still loading…</p>
+                <p className="text-sm text-gray-500 mt-1">
+                    Grab a cup of coffee ☕ — they’ll show up soon.
+                </p>
+                </div>
+                }
             </AppWindow>
           );
         })}
