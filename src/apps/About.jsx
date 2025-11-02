@@ -2,65 +2,159 @@ import React from 'react';
 
 export default function About() {
   return (
-    <div className="about-content p-6">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">About Me</h1>
-          <p className="text-lg text-gray-600">Full Stack Developer & Designer</p>
-        </div>
-
-        {/* Profile Section */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Bio</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Hi! I'm a passionate developer with expertise in building modern web applications. 
-            I love creating intuitive user experiences and writing clean, maintainable code.
-          </p>
-          <p className="text-gray-700 leading-relaxed">
-            My journey in tech started with curiosity and has evolved into a career focused on 
-            crafting innovative solutions that make a difference.
-          </p>
-        </div>
-
-        {/* Skills Section */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Skills</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {['React', 'JavaScript', 'Node.js', 'Python', 'TailwindCSS', 'Redux'].map((skill) => (
-              <div
-                key={skill}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg text-center font-medium"
-              >
-                {skill}
+    <div className="w-full" style={{
+      background: 'linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%)',
+    }}>
+      <div className="max-w-3xl mx-auto p-8 pb-16">
+        {/* Hero Section with Image */}
+        <div className="relative mb-8 rounded-3xl overflow-hidden" style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+        }}>
+          <div className="p-12 text-center relative">
+            {/* Profile Image */}
+            <div className="mb-6 inline-block">
+              <div className="w-40 h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/40 flex items-center justify-center text-7xl font-bold text-white shadow-2xl">
+                PK
               </div>
-            ))}
+            </div>
+            <h1 className="text-5xl font-bold text-white mb-2">Praveen Kumar Reddy</h1>
+            <p className="text-2xl text-white/95 mb-4 font-medium">Full Stack Developer</p>
+            <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white">
+              <span className="text-lg">💼</span>
+              <span className="font-medium">Apex Cura Healthcare Solutions</span>
+            </div>
           </div>
         </div>
 
-        {/* Interests Section */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Interests</h2>
-          <ul className="list-disc list-inside text-gray-700 space-y-2">
-            <li>Open Source Contributions</li>
-            <li>UI/UX Design</li>
-            <li>Learning New Technologies</li>
-            <li>Building Side Projects</li>
-          </ul>
+        {/* Main About Section */}
+        <div className="mb-6 rounded-2xl p-8 bg-white shadow-lg">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <span className="text-3xl">👋</span>
+            Hello, I'm Praveen
+          </h2>
+          <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+            <p>
+              I'm a passionate <span className="font-semibold text-purple-600">Full Stack Developer</span> currently 
+              working at <span className="font-semibold">Apex Cura Healthcare Solutions</span>, where I build 
+              innovative web applications that make healthcare more accessible and efficient.
+            </p>
+            <p>
+              I specialize in creating <span className="font-semibold text-blue-600">scalable, responsive</span> web 
+              applications using modern technologies like React, Node.js, and MongoDB. My work focuses on delivering 
+              seamless user experiences while maintaining clean, maintainable code.
+            </p>
+            <p>
+              With a strong foundation in both <span className="font-semibold text-green-600">frontend and backend</span> development, 
+              I've successfully reduced UI development time by 30% through innovative frameworks and implemented 
+              real-time communication systems that enhance user engagement.
+            </p>
+          </div>
         </div>
 
-        {/* Contact Info */}
-        <div className="bg-white/50 backdrop-blur-sm rounded-lg p-6 shadow-md text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Let's Connect</h2>
-          <p className="text-gray-700 mb-4">
-            I'm always open to discussing new projects and opportunities.
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="rounded-2xl p-6 bg-white shadow-lg text-center">
+            <div className="text-4xl mb-2">🎓</div>
+            <div className="text-3xl font-bold text-purple-600 mb-1">8.80</div>
+            <div className="text-sm text-gray-600 font-medium">CGPA in B.Tech CSE</div>
+          </div>
+          <div className="rounded-2xl p-6 bg-white shadow-lg text-center">
+            <div className="text-4xl mb-2">💼</div>
+            <div className="text-3xl font-bold text-blue-600 mb-1">1+ Year</div>
+            <div className="text-sm text-gray-600 font-medium">Professional Experience</div>
+          </div>
+        </div>
+
+        {/* Core Expertise */}
+        <div className="mb-6 rounded-2xl p-8 bg-white shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <span className="text-2xl">⚡</span>
+            Core Expertise
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200">
+              <div className="text-2xl mb-2">🎨</div>
+              <h3 className="font-semibold text-gray-800 mb-1">Frontend Development</h3>
+              <p className="text-sm text-gray-600">React, Redux, Tailwind CSS, TypeScript</p>
+            </div>
+            <div className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200">
+              <div className="text-2xl mb-2">⚙️</div>
+              <h3 className="font-semibold text-gray-800 mb-1">Backend Development</h3>
+              <p className="text-sm text-gray-600">Node.js, Express.js, MongoDB, REST APIs</p>
+            </div>
+            <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200">
+              <div className="text-2xl mb-2">🔄</div>
+              <h3 className="font-semibold text-gray-800 mb-1">Real-time Systems</h3>
+              <p className="text-sm text-gray-600">WebSockets, Socket.io, Live Chat</p>
+            </div>
+            <div className="p-4 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200">
+              <div className="text-2xl mb-2">☁️</div>
+              <h3 className="font-semibold text-gray-800 mb-1">Cloud & DevOps</h3>
+              <p className="text-sm text-gray-600">AWS EC2, Git, CI/CD, Vercel</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Location & Contact Info */}
+        <div className="mb-6 rounded-2xl p-8 bg-white shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <span className="text-2xl">📍</span>
+            Get in Touch
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 text-gray-700">
+              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-xl">
+                📧
+              </div>
+              <div>
+                <div className="text-sm text-gray-500 font-medium">Email</div>
+                <div className="font-medium">praveen.220302@gmail.com</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-gray-700">
+              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-xl">
+                📱
+              </div>
+              <div>
+                <div className="text-sm text-gray-500 font-medium">Phone</div>
+                <div className="font-medium">+91 9701711749</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-gray-700">
+              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-xl">
+                🌍
+              </div>
+              <div>
+                <div className="text-sm text-gray-500 font-medium">Location</div>
+                <div className="font-medium">Andhra Pradesh, India</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action */}
+        <div className="rounded-2xl p-8 bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg text-white text-center">
+          <h2 className="text-2xl font-bold mb-3">Let's Build Something Amazing Together</h2>
+          <p className="mb-6 text-white/90 text-lg">
+            Open to new opportunities and collaborations
           </p>
-          <div className="flex justify-center gap-4">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
-              Email Me
+          <div className="flex flex-wrap justify-center gap-4">
+            <a
+              href="mailto:praveen.220302@gmail.com"
+              className="px-6 py-3 rounded-xl font-medium bg-white text-purple-600 hover:bg-gray-100 transition-all shadow-lg inline-flex items-center gap-2"
+            >
+              <span>📧</span> Send Email
+            </a>
+            <button
+              className="px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all border-2 border-white/30 inline-flex items-center gap-2"
+            >
+              <span>💻</span> View GitHub
             </button>
-            <button className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-lg transition">
-              LinkedIn
+            <button
+              className="px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all border-2 border-white/30 inline-flex items-center gap-2"
+            >
+              <span>💼</span> LinkedIn Profile
             </button>
           </div>
         </div>

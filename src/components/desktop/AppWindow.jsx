@@ -64,12 +64,15 @@ const AppWindow = ({
     left: isFullscreen ? 0 : initialPosition.x,
     width: isFullscreen ? '100vw' : 600,
     height: isFullscreen ? 'calc(100vh - 48px)' : 'auto',
+    maxHeight: isFullscreen ? 'calc(100vh - 48px)' : '70vh',
     borderRadius: isFullscreen ? 0 : '12px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     backdropFilter: 'blur(12px)',
     boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
     overflow: 'hidden',
     zIndex: 10,
+    display: 'flex',
+    flexDirection: 'column',
   };
 
   const dockPosition = isClosing ? getDockIconPosition() : null;
@@ -212,6 +215,8 @@ const AppWindow = ({
         style={{
           padding: '16px',
           backgroundColor: 'rgba(255,255,255,0.6)',
+          flex: 1,
+          overflow: 'auto',
         }}
       >
         {children}
