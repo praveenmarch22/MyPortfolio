@@ -50,7 +50,7 @@ export default function LockScreen({ onUnlock }) {
         transition={{ delay: 0.2, duration: 0.6 }}
         className="relative z-10 text-center mb-auto mt-32"
       >
-        <div className="text-8xl font-light text-white mb-2 tracking-tight drop-shadow-lg">
+        <div className="text-8xl font-bold text-white mb-2 tracking-tight drop-shadow-lg">
           {formatTime(currentTime)}
         </div>
         <div className="text-2xl font-medium text-white/90 drop-shadow-md">
@@ -71,8 +71,8 @@ export default function LockScreen({ onUnlock }) {
           whileTap={{ scale: 0.95 }}
           className="group relative"
         >
-          {/* Glassmorphism container */}
-          <div className="px-12 py-6 rounded-3xl backdrop-blur-2xl bg-white/10 border border-white/20 shadow-2xl">
+          {/* Container without background and border */}
+          <div className="px-12 py-6">
             <div className="flex flex-col items-center gap-3">
               {/* Double arrow up icon */}
               <div className="flex flex-col gap-0">
