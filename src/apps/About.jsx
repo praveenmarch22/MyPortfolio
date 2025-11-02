@@ -14,8 +14,16 @@ export default function About() {
           <div className="p-12 text-center relative">
             {/* Profile Image */}
             <div className="mb-6 inline-block">
-              <div className="w-40 h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/40 flex items-center justify-center text-7xl font-bold text-white shadow-2xl">
-                PK
+              <div className="w-40 h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/40 flex items-center justify-center overflow-hidden shadow-2xl">
+                <img 
+                  src="/praveen.jpg" 
+                  alt="Praveen Kumar Reddy" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = '<div class="text-7xl font-bold text-white">PK</div>';
+                  }}
+                />
               </div>
             </div>
             <h1 className="text-5xl font-bold text-white mb-2">Praveen Kumar Reddy</h1>
@@ -127,7 +135,7 @@ export default function About() {
               </div>
               <div>
                 <div className="text-sm text-gray-500 font-medium">Location</div>
-                <div className="font-medium">Andhra Pradesh, India</div>
+                <div className="font-medium">Hyderabad, India</div>
               </div>
             </div>
           </div>
@@ -146,16 +154,22 @@ export default function About() {
             >
               <span>📧</span> Send Email
             </a>
-            <button
+            <a
+              href="https://github.com/praveenmarch22"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all border-2 border-white/30 inline-flex items-center gap-2"
             >
               <span>💻</span> View GitHub
-            </button>
-            <button
+            </a>
+            <a
+              href="https://www.linkedin.com/in/praveen-kumar-reddy-chinthapulusu-478676253/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-6 py-3 rounded-xl font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all border-2 border-white/30 inline-flex items-center gap-2"
             >
               <span>💼</span> LinkedIn Profile
-            </button>
+            </a>
           </div>
         </div>
       </div>
