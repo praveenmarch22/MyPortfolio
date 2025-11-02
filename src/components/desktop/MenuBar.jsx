@@ -46,32 +46,7 @@ export default function MenuBar() {
     >
       {/* Left section */}
       <div className="flex items-center space-x-5 text-[13px]">
-        <span className="text-lg font-semibold leading-none" style={{ fontFamily: "SF Pro Display" }}>
-        <svg
-      width={18}
-      height={18}
-      viewBox="0 0 64 64"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{
-        display: "block",
-        borderRadius: "20%",
-      }}
-    >
-      <text
-        x="50%"
-        y="52%"
-        textAnchor="middle"
-        fontSize="44"
-        fontWeight="600"
-        fill={"#ffffff"}
-        fontFamily='-apple-system, "SF Pro Display", "Helvetica Neue", sans-serif'
-        dominantBaseline="middle"
-      >
-        P
-      </text>
-    </svg>
-        </span>
-        <span className="font-semibold">Finder</span>
+        <span className="font-bold text-base">Praveen 😴😴</span>
         <span>File</span>
         <span>Edit</span>
         <span>View</span>
