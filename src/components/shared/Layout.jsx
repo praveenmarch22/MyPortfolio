@@ -8,6 +8,11 @@ import AssistiveTouch from './AssistiveTouch'
 import AppWindow from '../desktop/AppWindow'
 import HomeScreen from '../desktop/HomeScreen'
 import About from '../../apps/About'
+import Projects from '../../apps/Projects'
+import Experience from '../../apps/Experience'
+import Skills from '../../apps/Skills'
+import Education from '../../apps/Education'
+import Contact from '../../apps/Contact'
 import { DOCK_APPS } from '../../data/apps'
 
 export default function Layout({ children }){
@@ -18,6 +23,12 @@ export default function Layout({ children }){
   const appComponents = {
     bio: About,
     about: About,
+    projects: Projects,
+    experience: Experience,
+    skills: Skills,
+    blog: Education,  // education uses 'blog' iconKey
+    education: Education,
+    contact: Contact,
   };
 
   const handleAppClick = (app) => {

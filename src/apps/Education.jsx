@@ -48,7 +48,7 @@ export default function Education() {
   ];
 
   return (
-    <div className="h-full w-full overflow-y-auto" style={{
+    <div className="w-full" style={{
       background: 'linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%)',
     }}>
       <div className="max-w-4xl mx-auto p-8 pb-16">
@@ -69,10 +69,7 @@ export default function Education() {
               <div key={index} className="relative pl-20">
                 {/* Timeline Dot */}
                 <div 
-                  className="absolute left-4 w-9 h-9 rounded-full flex items-center justify-center text-xl shadow-lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${edu.color.replace('from-', '').replace(' to-', ', ')})`,
-                  }}
+                  className={`absolute left-4 w-9 h-9 rounded-full flex items-center justify-center text-xl shadow-lg bg-gradient-to-r ${edu.color}`}
                 >
                   {edu.icon}
                 </div>
@@ -81,14 +78,11 @@ export default function Education() {
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
                   {/* Header */}
                   <div 
-                    className="p-6 text-white"
-                    style={{
-                      background: `linear-gradient(135deg, ${edu.color.replace('from-', '').replace(' to-', ', ')})`,
-                    }}
+                    className={`p-6 text-white bg-gradient-to-r ${edu.color}`}
                   >
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex-1">
-                        <h3 className="text-2xl font-bold mb-2">{edu.degree}</h3>
+                        <h3 className="text-2xl font-bold mb-2 text-white">{edu.degree}</h3>
                         <p className="text-white/90 text-lg font-medium">{edu.institution}</p>
                         <p className="text-white/80 text-sm">{edu.location}</p>
                       </div>

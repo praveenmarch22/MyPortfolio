@@ -60,7 +60,7 @@ export default function Experience() {
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto" style={{
+    <div className="w-full" style={{
       background: 'linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%)',
     }}>
       <div className="max-w-5xl mx-auto p-8 pb-16">
@@ -74,17 +74,14 @@ export default function Experience() {
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
           {/* Company Header */}
           <div 
-            className="p-8 text-white relative overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            }}
+            className="p-8 text-white relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-700"
           >
             <div className="absolute top-0 right-0 text-9xl opacity-10 -mt-4 -mr-4">
               {experience.logo}
             </div>
             <div className="relative z-10">
               <div className="text-6xl mb-4">{experience.logo}</div>
-              <h2 className="text-3xl font-bold mb-2">{experience.company}</h2>
+              <h2 className="text-3xl font-bold mb-2 text-white">{experience.company}</h2>
               <p className="text-xl text-white/95 font-semibold mb-4">{experience.position}</p>
               <div className="flex flex-wrap gap-4 text-white/90">
                 <div className="flex items-center gap-2">
@@ -123,15 +120,12 @@ export default function Experience() {
                     className="rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
                   >
                     <div 
-                      className="p-4 text-white"
-                      style={{
-                        background: `linear-gradient(135deg, ${achievement.color.replace('from-', '').replace(' to-', ', ')})`,
-                      }}
+                      className={`p-4 text-white bg-gradient-to-r ${achievement.color}`}
                     >
                       <div className="flex items-start gap-3">
                         <span className="text-3xl">{achievement.icon}</span>
                         <div className="flex-1">
-                          <h4 className="text-lg font-bold mb-1">{achievement.title}</h4>
+                          <h4 className="text-lg font-bold mb-1 text-white">{achievement.title}</h4>
                           <p className="text-white/90 text-sm mb-2">{achievement.description}</p>
                           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold">
                             <span>📈</span>
@@ -155,10 +149,7 @@ export default function Experience() {
                 {experience.technologies.map((tech, index) => (
                   <span
                     key={index}
-                    className="px-4 py-2 rounded-xl text-sm font-medium text-white shadow-md"
-                    style={{
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    }}
+                    className="px-4 py-2 rounded-xl text-sm font-medium text-white shadow-md bg-gradient-to-r from-indigo-600 to-purple-700"
                   >
                     {tech}
                   </span>

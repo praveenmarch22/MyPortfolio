@@ -67,7 +67,7 @@ export default function Skills() {
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto" style={{
+    <div className="w-full" style={{
       background: 'linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%)',
     }}>
       <div className="max-w-6xl mx-auto p-8 pb-16">
@@ -86,14 +86,11 @@ export default function Skills() {
             >
               {/* Category Header */}
               <div 
-                className="p-6 text-white"
-                style={{
-                  background: `linear-gradient(135deg, ${category.gradient.replace('from-', '').replace(' to-', ', ')})`,
-                }}
+                className={`p-6 text-white bg-gradient-to-r ${category.gradient}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">{category.icon}</span>
-                  <h2 className="text-2xl font-bold">{category.title}</h2>
+                  <h2 className="text-2xl font-bold text-white">{category.title}</h2>
                 </div>
               </div>
 
@@ -108,11 +105,8 @@ export default function Skills() {
                       </div>
                       <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-1000 ${getColorForLevel(skill.level)}`}
-                          style={{
-                            width: `${skill.level}%`,
-                            background: `linear-gradient(90deg, ${category.gradient.replace('from-', '').replace(' to-', ', ')})`,
-                          }}
+                          className={`h-full rounded-full transition-all duration-1000 bg-gradient-to-r ${category.gradient}`}
+                          style={{ width: `${skill.level}%` }}
                         ></div>
                       </div>
                     </div>
