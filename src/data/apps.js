@@ -12,7 +12,7 @@ const APPS = [
   {
     id: 'resume',
     name: 'Resume',
-    iconKey: 'about',
+    iconKey: 'resume',
     category: 'personal',
     description: 'My CV and biodata',
     component: 'Resume',

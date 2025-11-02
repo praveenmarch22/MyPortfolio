@@ -199,6 +199,26 @@ const ICONS = {
     </g>
   </svg>`,
 
+  resume: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gradResume" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FF6B6B"/>
+        <stop offset="100%" stop-color="#C92A2A"/>
+      </linearGradient>
+    </defs>
+    <rect width="1024" height="1024" rx="225" fill="url(#gradResume)"/>
+    <g opacity="0.95">
+      <rect x="280" y="180" width="464" height="664" rx="20" fill="white"/>
+      <rect x="340" y="260" width="140" height="140" rx="70" fill="#FF6B6B"/>
+      <rect x="340" y="440" width="344" height="30" rx="10" fill="#FFE0E0"/>
+      <rect x="340" y="500" width="344" height="30" rx="10" fill="#FFE0E0"/>
+      <rect x="340" y="560" width="280" height="30" rx="10" fill="#FFE0E0"/>
+      <rect x="340" y="640" width="344" height="20" rx="8" fill="#FFF0F0"/>
+      <rect x="340" y="680" width="344" height="20" rx="8" fill="#FFF0F0"/>
+      <rect x="340" y="720" width="250" height="20" rx="8" fill="#FFF0F0"/>
+    </g>
+  </svg>`,
+
   finder: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="gradFinder" x1="0%" y1="0%" x2="100%" y2="100%">
