@@ -13,6 +13,7 @@ import Experience from '../../apps/Experience'
 import Skills from '../../apps/Skills'
 import Education from '../../apps/Education'
 import Contact from '../../apps/Contact'
+import Resume from '../../apps/Resume'
 import { DOCK_APPS } from '../../data/apps'
 
 export default function Layout({ children }){
@@ -29,6 +30,7 @@ export default function Layout({ children }){
     blog: Education,  // education uses 'blog' iconKey
     education: Education,
     contact: Contact,
+    resume: Resume,
   };
 
   const handleAppClick = (app) => {
