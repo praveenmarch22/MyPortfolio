@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Wallpaper from './Wallpaper'
 import MenuBar from '../desktop/MenuBar'
 import Dock from '../desktop/Dock'
@@ -7,6 +8,7 @@ import ThemeToggle from './ThemeToggle'
 import AssistiveTouch from './AssistiveTouch'
 import AppWindow from '../desktop/AppWindow'
 import HomeScreen from '../desktop/HomeScreen'
+import LockScreen from './LockScreen'
 import About from '../../apps/About'
 import Projects from '../../apps/Projects'
 import Experience from '../../apps/Experience'
@@ -17,6 +19,7 @@ import Resume from '../../apps/Resume'
 import { DOCK_APPS } from '../../data/apps'
 
 export default function Layout({ children }){
+  const [isLocked, setIsLocked] = useState(true);
   const [openWindows, setOpenWindows] = useState([]);
   const [isDockVisible, setIsDockVisible] = useState(true);
   const [mouseY, setMouseY] = useState(0);
@@ -76,21 +79,43 @@ export default function Layout({ children }){
     }
   };
 
+  const handleUnlock = () => {
+    setIsLocked(false);
+  };
+
   return (
     <div 
       className="app-layout min-h-screen min-w-screen relative text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
+      {/* Lock Screen */}
+      <AnimatePresence>
+        {isLocked && <LockScreen onUnlock={handleUnlock} />}
+      </AnimatePresence>
+
       {/* Wallpaper is fixed and sits underneath everything */}
       <Wallpaper />
 
       {/* Top menu bar */}
-      <header className="fixed top-0 left-0 right-0 z-20">
-        <MenuBar />
-      </header>
+      {!isLocked && (
+        <motion.header 
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          className="fixed top-0 left-0 right-0 z-20"
+        >
+          <MenuBar />
+        </motion.header>
+      )}
 
       {/* Main content area - leave space for the menu bar */}
-      <main className="relative z-10 pt-12 pb-24 h-screen">
+      {!isLocked && (
+        <motion.main 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          className="relative z-10 pt-12 pb-24 h-screen"
+        >
         {/* Home Screen with apps */}
         <HomeScreen onAppClick={handleAppClick} />
 
@@ -131,15 +156,20 @@ export default function Layout({ children }){
             </AppWindow>
           );
         })}
-      </main>
+      </motion.main>
+      )}
 
       {/* Dock sits above wallpaper at the bottom */}
-      <footer 
-        className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none transition-transform duration-300 ease-in-out"
-        style={{
-          transform: openWindows.length > 0 && !isDockVisible ? 'translateY(150%)' : 'translateY(0)'
-        }}
-      >
+      {!isLocked && (
+        <motion.footer 
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none transition-transform duration-300 ease-in-out"
+          style={{
+            transform: openWindows.length > 0 && !isDockVisible ? 'translateY(150%)' : 'translateY(0)'
+          }}
+        >
         <div className="flex justify-center pointer-events-auto">
           {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
           <Dock
@@ -147,18 +177,21 @@ export default function Layout({ children }){
             onAppClick={handleAppClick}
           />
         </div>
-      </footer>
+      </motion.footer>
+      )}
 
       {/* Decorative cursor glow (non-interactive) */}
-      <CursorGlow />
+      {!isLocked && <CursorGlow />}
 
       {/* AssistiveTouch floating button */}
-      <AssistiveTouch  
-        onFullscreen={handleFullscreen}
-        onDarkMode={() => console.log("Dark Mode")}
-        onLightMode={() => console.log("Light Mode")}
-        onClose={() => console.log("Close")}
-      />
+      {!isLocked && (
+        <AssistiveTouch  
+          onFullscreen={handleFullscreen}
+          onDarkMode={() => console.log("Dark Mode")}
+          onLightMode={() => console.log("Light Mode")}
+          onClose={() => console.log("Close")}
+        />
+      )}
     </div>
   )
 }
