@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
 import ICONS from "../../utils/icons";
+import useMediaQuery from "../../hooks/useMediaQuery";
 
 export default function Dock({ apps = null, onAppClick = () => {} }) {
   const [mouseX, setMouseX] = useState(null);
   const containerRef = useRef(null);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const defaultApps = [
     { name: "Bio", iconKey: "bio", id: "bio" },
@@ -19,18 +21,24 @@ export default function Dock({ apps = null, onAppClick = () => {} }) {
   const renderedApps = apps?.length ? apps : defaultApps;
 
   const handleMouseMove = (e) => {
+    if (isMobile) return; // Disable magnification on mobile
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
     setMouseX(e.clientX - rect.left);
   };
 
-  const handleMouseLeave = () => setMouseX(null);
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    setMouseX(null);
+  };
 
   return (
     <div className="w-full flex justify-center items-end pb-3">
       <div
         ref={containerRef}
-        className="relative flex items-end px-2 py-2 rounded-3xl gap-[6px]"
+        className={`relative flex items-end ${
+          isMobile ? 'px-3 py-2 gap-2' : 'px-2 py-2 gap-[6px]'
+        } rounded-3xl`}
         style={{
           background: "rgba(255,255,255,0.10)",
           backdropFilter: "blur(40px) saturate(180%)",
@@ -49,6 +57,7 @@ export default function Dock({ apps = null, onAppClick = () => {} }) {
             mouseX={mouseX}
             containerRef={containerRef}
             onClick={() => onAppClick(app)}
+            isMobile={isMobile}
           />
         ))}
       </div>
@@ -56,7 +65,7 @@ export default function Dock({ apps = null, onAppClick = () => {} }) {
   );
 }
 
-function DockIcon({ app, mouseX, containerRef, onClick }) {
+function DockIcon({ app, mouseX, containerRef, onClick, isMobile }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const iconRef = useRef(null);
 
@@ -69,7 +78,7 @@ function DockIcon({ app, mouseX, containerRef, onClick }) {
   const iconData = getIcon();
 
   const getTransform = (iconX, iconWidth) => {
-    if (mouseX === null) return { scale: 1, offset: 0 };
+    if (isMobile || mouseX === null) return { scale: 1, offset: 0 };
     const iconCenter = iconX + iconWidth / 2;
     const distance = Math.abs(mouseX - iconCenter);
     const maxDistance = 160;
@@ -86,21 +95,23 @@ function DockIcon({ app, mouseX, containerRef, onClick }) {
     ? getTransform(iconRef.current.offsetLeft, iconRef.current.offsetWidth)
     : { scale: 1, offset: 0 };
 
-  const baseSize = 58;
-  const spacing = 8 + (scale - 1) * 18;
+  const baseSize = isMobile ? 48 : 58;
+  const spacing = isMobile ? 0 : 8 + (scale - 1) * 18;
 
   return (
     <div
       ref={iconRef}
       data-app-id={app.id}
-      className="relative flex flex-col items-center cursor-pointer select-none"
-      onMouseEnter={() => setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
+      className={`relative flex flex-col items-center cursor-pointer select-none ${
+        isMobile ? 'active:scale-90' : ''
+      }`}
+      onMouseEnter={() => !isMobile && setShowTooltip(true)}
+      onMouseLeave={() => !isMobile && setShowTooltip(false)}
       onClick={onClick}
       style={{
-        transform: `translateY(${offset}px) scale(${scale})`,
+        transform: isMobile ? 'none' : `translateY(${offset}px) scale(${scale})`,
         transformOrigin: "bottom center",
-        transition: "transform 0.15s ease-out, margin 0.2s ease-out",
+        transition: isMobile ? 'transform 0.1s ease' : "transform 0.15s ease-out, margin 0.2s ease-out",
         marginLeft: `${spacing / 2}px`,
         marginRight: `${spacing / 2}px`,
       }}

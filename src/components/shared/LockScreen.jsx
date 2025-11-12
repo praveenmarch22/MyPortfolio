@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import useMediaQuery from '../../hooks/useMediaQuery';
 
 export default function LockScreen({ onUnlock }) {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,17 +31,47 @@ export default function LockScreen({ onUnlock }) {
     });
   };
 
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setDragY(0);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const startY = window.innerHeight * 0.7; // Approximate starting position
+    const currentY = touch.clientY;
+    const deltaY = startY - currentY;
+    
+    // Only allow upward drag
+    if (deltaY > 0) {
+      setDragY(Math.min(deltaY, 200));
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (dragY > 100) {
+      // Swipe was sufficient, unlock
+      onUnlock();
+    } else {
+      // Reset position
+      setDragY(0);
+    }
+    setIsDragging(false);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.1 }}
       transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+      className={`fixed inset-0 z-50 flex flex-col items-center ${isMobile ? 'justify-start overflow-y-auto' : 'justify-center'}`}
       style={{
         background: 'linear-gradient(to bottom, #667eea 0%, #764ba2 100%)',
         backgroundImage: 'url(/wallpaper.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundAttachment: isMobile ? 'scroll' : 'fixed',
       }}
     >
       {/* Overlay for better text visibility */}
@@ -48,12 +82,12 @@ export default function LockScreen({ onUnlock }) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.6 }}
-        className="relative z-10 text-center mb-auto mt-32"
+        className={`relative z-10 text-center ${isMobile ? 'mt-32 mb-8' : 'mb-auto mt-32'}`}
       >
-        <div className="text-8xl font-bold text-white mb-2 tracking-tight drop-shadow-lg">
+        <div className={`${isMobile ? 'text-6xl' : 'text-8xl'} font-bold text-white mb-2 tracking-tight drop-shadow-lg`}>
           {formatTime(currentTime)}
         </div>
-        <div className="text-2xl font-medium text-white/90 drop-shadow-md">
+        <div className={`${isMobile ? 'text-xl' : 'text-2xl'} font-medium text-white/90 drop-shadow-md`}>
           {formatDate(currentTime)}
         </div>
       </motion.div>
@@ -63,7 +97,14 @@ export default function LockScreen({ onUnlock }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
-        className="relative z-10 mb-20"
+        className={`relative z-10 ${isMobile ? 'mb-32 mt-auto' : 'mb-20'}`}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{
+          transform: `translateY(-${dragY}px)`,
+          transition: isDragging ? 'none' : 'transform 0.3s ease-out'
+        }}
       >
         <motion.button
           onClick={onUnlock}

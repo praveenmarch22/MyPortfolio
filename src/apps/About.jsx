@@ -2,46 +2,46 @@ import React from 'react';
 
 export default function About() {
   return (
-    <div className="w-full" style={{
+    <div className="w-full h-full overflow-y-auto" style={{
       background: 'linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%)',
     }}>
-      <div className="max-w-3xl mx-auto p-8 pb-16">
+      <div className="max-w-3xl mx-auto p-4 sm:p-6 md:p-8 pb-16">
         {/* Hero Section with Image */}
-        <div className="relative mb-8 rounded-3xl overflow-hidden" style={{
+        <div className="relative mb-6 md:mb-8 rounded-2xl md:rounded-3xl overflow-hidden" style={{
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
         }}>
-          <div className="p-12 text-center relative">
+          <div className="p-6 sm:p-8 md:p-12 text-center relative">
             {/* Profile Image */}
-            <div className="mb-6 inline-block">
-              <div className="w-40 h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/40 flex items-center justify-center overflow-hidden shadow-2xl">
+            <div className="mb-4 md:mb-6 inline-block">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full bg-white/20 backdrop-blur-sm border-4 border-white/40 flex items-center justify-center overflow-hidden shadow-2xl">
                 <img 
                   src="/praveen.jpg" 
                   alt="Praveen Kumar Reddy" 
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<div class="text-7xl font-bold text-white">PK</div>';
+                    e.target.parentElement.innerHTML = '<div class="text-5xl md:text-7xl font-bold text-white">PK</div>';
                   }}
                 />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-white mb-2">Praveen Kumar Reddy</h1>
-            <p className="text-2xl text-white/95 mb-4 font-medium">Full Stack Developer</p>
-            <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white">
-              <span className="text-lg">💼</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">Praveen Kumar Reddy</h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-white/95 mb-4 font-medium">Full Stack Developer</p>
+            <div className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-sm md:text-base">
+              <span className="text-base md:text-lg">💼</span>
               <span className="font-medium">Apex Cura Healthcare Solutions</span>
             </div>
           </div>
         </div>
 
         {/* Main About Section */}
-        <div className="mb-6 rounded-2xl p-8 bg-white shadow-lg">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-            <span className="text-3xl">👋</span>
+        <div className="mb-6 rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8 bg-white shadow-lg">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+            <span className="text-2xl md:text-3xl">👋</span>
             Hello, I'm Praveen
           </h2>
-          <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
+          <div className="space-y-3 md:space-y-4 text-gray-700 text-base md:text-lg leading-relaxed">
             <p>
               I'm a passionate <span className="font-semibold text-purple-600">Full Stack Developer</span> currently 
               working at <span className="font-semibold">Apex Cura Healthcare Solutions</span>, where I build 

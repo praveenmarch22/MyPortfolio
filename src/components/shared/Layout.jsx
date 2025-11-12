@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
+import useMediaQuery from '../../hooks/useMediaQuery'
+import MobileLayout from '../mobile/MobileLayout'
 import Wallpaper from './Wallpaper'
 import MenuBar from '../desktop/MenuBar'
 import Dock from '../desktop/Dock'
@@ -16,13 +19,62 @@ import Skills from '../../apps/Skills'
 import Education from '../../apps/Education'
 import Contact from '../../apps/Contact'
 import Resume from '../../apps/Resume'
+import Finder from '../../apps/Finder'
+import Settings from '../../apps/Settings'
 import { DOCK_APPS } from '../../data/apps'
 
 export default function Layout({ children }){
+  // Detect mobile and tablet viewports
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure hydration on client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Show loading state during hydration
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+        <div className="text-white text-2xl font-semibold">Loading...</div>
+      </div>
+    );
+  }
+
+  // If mobile or tablet, render MobileLayout instead
+  if (isMobile || isTablet) {
+    return <MobileLayout />;
+  }
+
+  // Desktop Layout - return DesktopLayout component
+  return <DesktopLayout />;
+}
+
+// Desktop Layout Component
+function DesktopLayout() {
   const [isLocked, setIsLocked] = useState(true);
   const [openWindows, setOpenWindows] = useState([]);
-  const [isDockVisible, setIsDockVisible] = useState(true);
+  const [isDockVisible, setIsDockVisible] = useState(false);
   const [mouseY, setMouseY] = useState(0);
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('portfolioSettings');
+    return saved ? JSON.parse(saved) : {
+      showAssistiveTouch: true,
+      cursorGlow: true,
+      animations: true,
+    };
+  });
+
+  // Listen for settings changes
+  useEffect(() => {
+    const handleSettingsChange = (e) => {
+      setSettings(e.detail);
+    };
+    window.addEventListener('settingsChanged', handleSettingsChange);
+    return () => window.removeEventListener('settingsChanged', handleSettingsChange);
+  }, []);
 
   const appComponents = {
     bio: About,
@@ -34,6 +86,8 @@ export default function Layout({ children }){
     education: Education,
     contact: Contact,
     resume: Resume,
+    finder: Finder,
+    settings: Settings,
   };
 
   const handleAppClick = (app) => {
@@ -56,13 +110,18 @@ export default function Layout({ children }){
 
   const handleMouseMove = (e) => {
     setMouseY(e.clientY);
-    // Show dock when mouse is near bottom and there are open windows
-    if (openWindows.length > 0) {
-      const windowHeight = window.innerHeight;
-      if (e.clientY > windowHeight - 100) {
-        setIsDockVisible(true);
-      } else {
+    const windowHeight = window.innerHeight;
+    
+    // Show dock when mouse is near bottom (within 50px)
+    if (e.clientY > windowHeight - 50) {
+      setIsDockVisible(true);
+    } else {
+      // Hide dock only if there are open windows
+      if (openWindows.length > 0) {
         setIsDockVisible(false);
+      } else {
+        // Keep dock visible if no windows are open
+        setIsDockVisible(true);
       }
     }
   };
@@ -163,12 +222,12 @@ export default function Layout({ children }){
       {!isLocked && (
         <motion.footer 
           initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none transition-transform duration-300 ease-in-out"
-          style={{
-            transform: openWindows.length > 0 && !isDockVisible ? 'translateY(150%)' : 'translateY(0)'
+          animate={{ 
+            y: isDockVisible ? 0 : 100, 
+            opacity: isDockVisible ? 1 : 0 
           }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none"
         >
         <div className="flex justify-center pointer-events-auto">
           {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
@@ -181,10 +240,10 @@ export default function Layout({ children }){
       )}
 
       {/* Decorative cursor glow (non-interactive) */}
-      {!isLocked && <CursorGlow />}
+      {!isLocked && settings.cursorGlow && <CursorGlow />}
 
       {/* AssistiveTouch floating button */}
-      {!isLocked && (
+      {!isLocked && settings.showAssistiveTouch && (
         <AssistiveTouch  
           onFullscreen={handleFullscreen}
           onDarkMode={() => console.log("Dark Mode")}

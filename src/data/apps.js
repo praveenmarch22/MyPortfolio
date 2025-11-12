@@ -117,7 +117,7 @@ export const DOCK_APPS = [
   'finder',
 ].map(id => APPS.find(app => app.id === id));
 
-// Home screen apps - organized by pages (iPad-style)
+// Home screen apps - organized by pages (iPad-style) - MOBILE ONLY
 export const HOME_SCREEN_APPS = [
   // Page 1 - Personal & Professional
   [
@@ -126,13 +126,12 @@ export const HOME_SCREEN_APPS = [
     APPS.find(app => app.id === 'projects'),
     APPS.find(app => app.id === 'experience'),
     APPS.find(app => app.id === 'skills'),
-    APPS.find(app => app.id === 'finder'),
+    APPS.find(app => app.id === 'contact'),
   ],
   // Page 2 - Academic & Utility
   [
     APPS.find(app => app.id === 'education'),
     APPS.find(app => app.id === 'achievements'),
-    APPS.find(app => app.id === 'contact'),
     APPS.find(app => app.id === 'terminal'),
     APPS.find(app => app.id === 'gallery'),
     APPS.find(app => app.id === 'settings'),
