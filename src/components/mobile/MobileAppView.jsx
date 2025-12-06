@@ -5,6 +5,7 @@ import MobileNavBar from './MobileNavBar';
 export default function MobileAppView({
   app,
   onClose,
+  onShowAppSwitcher,
   children
 }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -75,6 +76,10 @@ export default function MobileAppView({
       <MobileNavBar
         title={app.title}
         onBack={onClose}
+        rightAction={onShowAppSwitcher ? {
+          label: '◻◻',
+          onClick: onShowAppSwitcher
+        } : undefined}
       />
 
       {/* App Content - Scrollable */}

@@ -128,8 +128,14 @@ export default function MobileLayout() {
     threshold: 80,
   });
 
-  // Filter dock apps for mobile (exclude terminal)
-  const mobileDockApps = DOCK_APPS.filter(app => app && app.id !== 'terminal').slice(0, 4);
+
+  // Mobile dock apps - custom selection (no finder or terminal on mobile)
+  const mobileDockApps = [
+    { id: 'bio', name: 'About Me', iconKey: 'bio' },
+    { id: 'projects', name: 'Projects', iconKey: 'projects' },
+    { id: 'gallery', name: 'Gallery', iconKey: 'gallery' },
+    { id: 'settings', name: 'Settings', iconKey: 'settings' },
+  ];
 
   return (
     <div className="mobile-layout min-h-screen min-w-screen relative text-white overflow-hidden fixed inset-0">
@@ -159,6 +165,7 @@ export default function MobileLayout() {
                 <MobileAppView
                   app={currentApp}
                   onClose={handleBackToHome}
+                  onShowAppSwitcher={handleToggleAppSwitcher}
                 >
                   {currentApp.component ? (
                     React.createElement(currentApp.component)
@@ -185,59 +192,33 @@ export default function MobileLayout() {
             </AnimatePresence>
           </div>
 
-          {/* Mobile Dock */}
-          <motion.div
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="pb-6 px-4 relative z-20"
-          >
-            <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-2xl">
-              <div className="flex items-center justify-around gap-2">
-                {/* Home Button */}
-                {currentApp && (
-                  <button
-                    onClick={handleBackToHome}
-                    className="flex flex-col items-center active:scale-90 transition-transform"
-                  >
-                    <div className="w-14 h-14 rounded-2xl shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                      </svg>
-                    </div>
-                  </button>
-                )}
-
-                {/* Regular Dock Apps */}
-                {mobileDockApps.map((app) => (
-                  <button
-                    key={app.id}
-                    onClick={() => handleAppClick(app)}
-                    className="flex flex-col items-center active:scale-90 transition-transform"
-                  >
-                    <div
-                      className="w-14 h-14 rounded-2xl shadow-lg overflow-hidden"
-                      dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] || ICONS.folder }}
-                    />
-                  </button>
-                ))}
-
-                {/* Back Button (when in app) */}
-                {currentApp && (
-                  <button
-                    onClick={handleBackToHome}
-                    className="flex flex-col items-center active:scale-90 transition-transform"
-                  >
-                    <div className="w-14 h-14 rounded-2xl shadow-lg bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                      </svg>
-                    </div>
-                  </button>
-                )}
+          {/* Mobile Dock - Only show when on home screen (no app open) */}
+          {!currentApp && (
+            <motion.div
+              initial={{ y: 100 }}
+              animate={{ y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="pb-6 px-4 relative z-20"
+            >
+              <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-2xl">
+                <div className="flex items-center justify-around gap-2">
+                  {/* Regular Dock Apps */}
+                  {mobileDockApps.map((app) => (
+                    <button
+                      key={app.id}
+                      onClick={() => handleAppClick(app)}
+                      className="flex flex-col items-center active:scale-90 transition-transform"
+                    >
+                      <div
+                        className="w-14 h-14 rounded-2xl shadow-lg overflow-hidden"
+                        dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] || ICONS.folder }}
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </motion.div>
       )}
 
