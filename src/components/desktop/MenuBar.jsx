@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Wifi, Settings, Volume2, Search, Battery } from "lucide-react";
+import { Wifi, Volume2, Search, Battery } from "lucide-react";
 
 /**
  * A React component that mimics the Apple macOS menu bar.
- *
- * It features a translucent, blurry background, the Apple logo,
- * a placeholder application name, standard menu items,
- * and a set of system status icons on the right, along with the current date and time.
- *
- * The time string updates every 30 seconds.
  */
 export default function MenuBar() {
-  // State to hold the formatted date and time string
   const [timeString, setTimeString] = useState(() =>
     new Date().toLocaleString("en-US", {
       weekday: "short",
@@ -19,10 +12,9 @@ export default function MenuBar() {
       day: "numeric",
       hour: "numeric",
       minute: "2-digit",
-    }).replace(/,/g, '') // Remove comma after day
+    }).replace(/,/g, '')
   );
 
-  // Update time every 30 seconds to keep it current
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeString(
@@ -34,83 +26,80 @@ export default function MenuBar() {
           minute: "2-digit",
         }).replace(/,/g, '')
       );
-    }, 30 * 1000); // Update every 30 seconds
+    }, 30 * 1000);
 
-    // Clear interval on component unmount
     return () => clearInterval(interval);
   }, []);
 
+  const MenuItem = ({ children, isBold = false }) => (
+    <span
+      className={`px-2.5 py-0.5 rounded hover:bg-black/10 cursor-default transition-colors ${isBold ? 'font-semibold' : ''}`}
+    >
+      {children}
+    </span>
+  );
+
   return (
     <div
-      className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-1 text-[13px] text-black select-none"
+      className="flex items-center justify-between px-3 py-0 text-[13px] text-black/90 select-none"
       style={{
-        background:
-          "linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.3))",
+        background: "rgba(255,255,255,0.75)",
         backdropFilter: "blur(30px) saturate(180%)",
-        WebkitBackdropFilter: "blur(30px) saturate(180%)", // For Safari
-        borderBottom: "1px solid rgba(200,200,200,0.3)",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif',
-        height: "28px", // Standard macOS menu bar height
-        zIndex: 100,
+        WebkitBackdropFilter: "blur(30px) saturate(180%)",
+        borderBottom: "1px solid rgba(0,0,0,0.1)",
+        fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif',
+        height: "25px",
+        zIndex: 10,
       }}
     >
-      {/* Left section: Apple logo, App name, Menu items */}
-      <div className="flex items-center space-x-5">
-        {/* Apple Logo Character */}
+      {/* Left section: Name, App name, Menu items */}
+      <div className="flex items-center">
+        {/* Name with emojis */}
         <span
-          className="text-[17px] -mt-0.5"
-          aria-label="Apple menu"
-          role="button"
+          className="text-[14px] px-3 py-0.5 hover:bg-black/10 rounded cursor-default font-medium"
+          aria-label="User menu"
         >
           Praveen 🥱😴
         </span>
-        <span className="font-semibold" aria-label="Current application">
-          Finder
-        </span>
-        <span className="opacity-90" role="menuitem">File</span>
-        <span className="opacity-90" role="menuitem">Edit</span>
-        <span className="opacity-90" role="menuitem">View</span>
-        <span className="opacity-90" role="menuitem">Go</span>
-        <span className="opacity-90" role="menuitem">Window</span>
-        <span className="opacity-90" role="menuitem">Help</span>
+
+        <MenuItem isBold>Finder</MenuItem>
+        <MenuItem>File</MenuItem>
+        <MenuItem>Edit</MenuItem>
+        <MenuItem>View</MenuItem>
+        <MenuItem>Go</MenuItem>
+        <MenuItem>Window</MenuItem>
+        <MenuItem>Help</MenuItem>
       </div>
 
       {/* Right section: Status icons and Date/Time */}
-      <div className="flex items-center space-x-4 text-gray-900">
-        <Battery
-          size={18}
-          strokeWidth={1.5}
-          fill="black"
-          className="opacity-90"
-          aria-label="Battery status: full"
-        />
-        <Wifi
-          size={15}
-          strokeWidth={2}
-          className="opacity-90"
-          aria-label="Wi-Fi: connected"
-        />
-        <Volume2
-          size={15}
-          strokeWidth={2}
-          className="opacity-90"
-          aria-label="Volume: high"
-        />
-        <Search
-          size={15}
-          strokeWidth={2}
-          className="opacity-90"
-          aria-label="Spotlight search"
-          role="search"
-        />
-        <Settings
-          size={15}
-          strokeWidth={2}
-          className="opacity-90"
-          aria-label="Control Center"
-        />
-        <span className="ml-1 tracking-tight font-medium" aria-label="Current time">
+      <div className="flex items-center gap-3 text-black/80">
+        <div className="flex items-center gap-2.5">
+          <Battery
+            size={18}
+            strokeWidth={1.5}
+            className="opacity-80"
+            aria-label="Battery status"
+          />
+          <Wifi
+            size={14}
+            strokeWidth={2}
+            className="opacity-80"
+            aria-label="Wi-Fi"
+          />
+          <Volume2
+            size={14}
+            strokeWidth={2}
+            className="opacity-80"
+            aria-label="Volume"
+          />
+          <Search
+            size={14}
+            strokeWidth={2}
+            className="opacity-80"
+            aria-label="Spotlight"
+          />
+        </div>
+        <span className="text-[13px] font-normal opacity-90" aria-label="Current time">
           {timeString}
         </span>
       </div>

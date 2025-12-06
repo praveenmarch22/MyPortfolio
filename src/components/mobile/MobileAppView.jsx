@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import MobileNavBar from './MobileNavBar';
 
-export default function MobileAppView({ 
-  app, 
-  onClose, 
-  children 
+export default function MobileAppView({
+  app,
+  onClose,
+  children
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const x = useMotionValue(0);
@@ -32,7 +32,7 @@ export default function MobileAppView({
 
   const handleDragEnd = (event, info) => {
     setIsDragging(false);
-    
+
     // If dragged more than 150px, go back
     if (x.get() > 150) {
       animate(x, window.innerWidth, {
@@ -56,9 +56,9 @@ export default function MobileAppView({
       initial={{ x: '100%' }}
       animate={{ x: isDragging ? x : 0 }}
       exit={{ x: '100%' }}
-      transition={isDragging ? undefined : { 
-        type: 'spring', 
-        stiffness: 300, 
+      transition={isDragging ? undefined : {
+        type: 'spring',
+        stiffness: 300,
         damping: 30,
         mass: 0.8
       }}
@@ -72,8 +72,8 @@ export default function MobileAppView({
       className="absolute inset-0 flex flex-col bg-gradient-to-b from-black/40 to-black/20 backdrop-blur-xl z-30"
     >
       {/* Navigation Bar */}
-      <MobileNavBar 
-        title={app.title} 
+      <MobileNavBar
+        title={app.title}
         onBack={onClose}
       />
 
@@ -94,10 +94,10 @@ export default function MobileAppView({
           animate={{ opacity: 1 }}
           className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none z-50"
         >
-          <svg 
-            className="w-8 h-8 text-blue-400" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="w-8 h-8 text-blue-400"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
             strokeWidth={3}
           >

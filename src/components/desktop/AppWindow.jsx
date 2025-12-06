@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useDragControls } from 'framer-motion';
 
 const AppWindow = ({
@@ -9,6 +9,7 @@ const AppWindow = ({
   onFullscreen,
   initialPosition = { x: 100, y: 100 },
   appId,
+  windowIndex = 0,
 }) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -16,6 +17,15 @@ const AppWindow = ({
   const [isClosing, setIsClosing] = useState(false);
   const nodeRef = useRef(null);
   const dragControls = useDragControls();
+
+  // Listen for exit fullscreen event (when new app is opened)
+  useEffect(() => {
+    const handleExitFullscreen = () => {
+      setIsFullscreen(false);
+    };
+    window.addEventListener('exitAllFullscreen', handleExitFullscreen);
+    return () => window.removeEventListener('exitAllFullscreen', handleExitFullscreen);
+  }, []);
 
   const handleDragStart = (event, info) => setDragging(true);
   const handleDragEnd = (event, info) => {
@@ -58,19 +68,25 @@ const AppWindow = ({
     onFullscreen && onFullscreen();
   };
 
+  // Calculate z-index: newer windows (higher index) should always be on top
+  // 100 + windowIndex * 100 means: window 0 = 100, window 1 = 200, window 2 = 300...
+  // This ensures newly opened windows ALWAYS appear on top of older windows (including fullscreen ones)
+  // Menu bar is z-index 10, so all windows are above it
+  const zIndex = 100 + (windowIndex * 100);
+
   const windowStyle = {
-    position: 'absolute',
-    top: isFullscreen ? '48px' : initialPosition.y,
+    position: isFullscreen ? 'fixed' : 'absolute',
+    top: isFullscreen ? 0 : initialPosition.y,
     left: isFullscreen ? 0 : initialPosition.x,
     width: isFullscreen ? '100vw' : 600,
-    height: isFullscreen ? 'calc(100vh - 48px)' : 'auto',
-    maxHeight: isFullscreen ? 'calc(100vh - 48px)' : '70vh',
+    height: isFullscreen ? '100vh' : 'auto',
+    maxHeight: isFullscreen ? '100vh' : '70vh',
     borderRadius: isFullscreen ? 0 : '12px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     backdropFilter: 'blur(12px)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+    boxShadow: isFullscreen ? 'none' : '0 4px 20px rgba(0,0,0,0.2)',
     overflow: 'hidden',
-    zIndex: 10,
+    zIndex: zIndex,
     display: 'flex',
     flexDirection: 'column',
   };
@@ -91,25 +107,25 @@ const AppWindow = ({
       animate={
         isClosing
           ? {
-              x: dockPosition ? dockPosition.x - initialPosition.x : 0,
-              y: dockPosition ? dockPosition.y - initialPosition.y : window.innerHeight,
-              scale: 0,
-              opacity: 0,
-              transition: {
-                duration: 0.4,
-                ease: [0.4, 0, 0.2, 1],
-              },
-            }
+            x: dockPosition ? dockPosition.x - initialPosition.x : 0,
+            y: dockPosition ? dockPosition.y - initialPosition.y : window.innerHeight,
+            scale: 0,
+            opacity: 0,
+            transition: {
+              duration: 0.4,
+              ease: [0.4, 0, 0.2, 1],
+            },
+          }
           : {
-              x: isFullscreen ? 0 : undefined,
-              y: isFullscreen ? 0 : undefined,
-              scale: 1,
-              opacity: 1,
-              transition: {
-                duration: 0.3,
-                ease: [0.4, 0, 0.2, 1],
-              },
-            }
+            x: isFullscreen ? 0 : undefined,
+            y: isFullscreen ? 0 : undefined,
+            scale: 1,
+            opacity: 1,
+            transition: {
+              duration: 0.3,
+              ease: [0.4, 0, 0.2, 1],
+            },
+          }
       }
       style={windowStyle}
     >
@@ -213,7 +229,6 @@ const AppWindow = ({
       <div
         className="window-content"
         style={{
-          padding: '16px',
           backgroundColor: 'rgba(255,255,255,0.6)',
           flex: 1,
           overflow: 'auto',

@@ -96,6 +96,14 @@ const APPS = [
     component: 'Gallery',
   },
   {
+    id: 'music',
+    name: 'Music',
+    iconKey: 'music',
+    category: 'utility',
+    description: 'Listen to some tunes',
+    component: 'Music',
+  },
+  {
     id: 'settings',
     name: 'Settings',
     iconKey: 'settings',
@@ -111,13 +119,14 @@ const APPS = [
 export const DOCK_APPS = [
   'bio',
   'projects',
-  'experience',
-  'skills',
-  'contact',
+  'terminal',
+  'music',
   'finder',
+  'settings',
 ].map(id => APPS.find(app => app.id === id));
 
 // Home screen apps - organized by pages (iPad-style) - MOBILE ONLY
+// Note: Terminal is excluded from mobile as it's not touch-friendly
 export const HOME_SCREEN_APPS = [
   // Page 1 - Personal & Professional
   [
@@ -128,12 +137,13 @@ export const HOME_SCREEN_APPS = [
     APPS.find(app => app.id === 'skills'),
     APPS.find(app => app.id === 'contact'),
   ],
-  // Page 2 - Academic & Utility
+  // Page 2 - Academic & Utility (no Terminal on mobile)
   [
     APPS.find(app => app.id === 'education'),
     APPS.find(app => app.id === 'achievements'),
-    APPS.find(app => app.id === 'terminal'),
     APPS.find(app => app.id === 'gallery'),
+    APPS.find(app => app.id === 'music'),
+    APPS.find(app => app.id === 'finder'),
     APPS.find(app => app.id === 'settings'),
   ],
 ];
@@ -142,7 +152,7 @@ export const HOME_SCREEN_APPS = [
 export const getAppById = (id) => APPS.find(app => app.id === id);
 
 // Get apps by category
-export const getAppsByCategory = (category) => 
+export const getAppsByCategory = (category) =>
   APPS.filter(app => app.category === category);
 
 // All apps list

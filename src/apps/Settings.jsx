@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Moon, 
-  Sun, 
+import {
+  Moon,
+  Sun,
   Monitor,
   Eye,
   EyeOff,
@@ -39,7 +39,7 @@ export default function Settings() {
   // Save settings to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('portfolioSettings', JSON.stringify(settings));
-    
+
     // Dispatch custom event for other components to listen
     window.dispatchEvent(new CustomEvent('settingsChanged', { detail: settings }));
   }, [settings]);
@@ -101,9 +101,8 @@ export default function Settings() {
   const Toggle = ({ enabled, onChange }) => (
     <button
       onClick={onChange}
-      className={`relative w-14 h-8 rounded-full transition-colors duration-300 ${
-        enabled ? 'bg-blue-500' : 'bg-gray-600'
-      }`}
+      className={`relative w-14 h-8 rounded-full transition-colors duration-300 ${enabled ? 'bg-blue-500' : 'bg-gray-600'
+        }`}
     >
       <motion.div
         layout
@@ -131,7 +130,7 @@ export default function Settings() {
               <Palette className="w-6 h-6 text-blue-400" />
               Appearance
             </h2>
-            
+
             {/* Theme Selector */}
             <SettingItem
               icon={settings.theme === 'dark' ? Moon : settings.theme === 'light' ? Sun : Monitor}
@@ -141,33 +140,30 @@ export default function Settings() {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleThemeChange('light')}
-                  className={`p-3 rounded-lg border-2 transition-all ${
-                    settings.theme === 'light'
+                  className={`p-3 rounded-lg border-2 transition-all ${settings.theme === 'light'
                       ? 'border-blue-500 bg-blue-500/20'
                       : 'border-gray-600 hover:border-gray-500'
-                  }`}
+                    }`}
                   title="Light Mode"
                 >
                   <Sun className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => handleThemeChange('dark')}
-                  className={`p-3 rounded-lg border-2 transition-all ${
-                    settings.theme === 'dark'
+                  className={`p-3 rounded-lg border-2 transition-all ${settings.theme === 'dark'
                       ? 'border-blue-500 bg-blue-500/20'
                       : 'border-gray-600 hover:border-gray-500'
-                  }`}
+                    }`}
                   title="Dark Mode"
                 >
                   <Moon className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => handleThemeChange('auto')}
-                  className={`p-3 rounded-lg border-2 transition-all ${
-                    settings.theme === 'auto'
+                  className={`p-3 rounded-lg border-2 transition-all ${settings.theme === 'auto'
                       ? 'border-blue-500 bg-blue-500/20'
                       : 'border-gray-600 hover:border-gray-500'
-                  }`}
+                    }`}
                   title="Auto (System)"
                 >
                   <Monitor className="w-5 h-5" />

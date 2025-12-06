@@ -22,12 +22,12 @@ const AssistiveIcon = () => (
 );
 
 export default function AssistiveTouch({
-  onFullscreen = () => {},
-  onDarkMode = () => {},
-  onHome = () => {},
-  onBack = () => {},
-  onClose = () => {},          // not used in mobile, kept for API parity
-  onLightMode = () => {},      // not used in mobile
+  onFullscreen = () => { },
+  onDarkMode = () => { },
+  onHome = () => { },
+  onBack = () => { },
+  onClose = () => { },          // not used in mobile, kept for API parity
+  onLightMode = () => { },      // not used in mobile
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isReturning, setIsReturning] = useState(false);

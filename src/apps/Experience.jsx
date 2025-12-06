@@ -102,7 +102,7 @@ export default function Experience() {
             </h3>
             <div className="space-y-2">
               {experience.achievements.map((achievement, index) => (
-                <div 
+                <div
                   key={index}
                   className="rounded-2xl bg-gray-50 overflow-hidden active:bg-gray-100 transition-colors"
                 >

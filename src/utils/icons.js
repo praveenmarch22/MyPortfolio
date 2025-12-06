@@ -94,6 +94,24 @@ export const ICONS = {
   </svg>`,
 
   /**
+   * Redesigned 'music' (like Apple Music)
+   * - Uses the iconic red/pink gradient of Apple Music.
+   * - Features a stylized musical note glyph.
+   */
+  music: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gradMusic" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FF2D55"/>
+        <stop offset="100%" stop-color="#FA233B"/>
+      </linearGradient>
+    </defs>
+    <rect width="1024" height="1024" rx="225" fill="url(#gradMusic)"/>
+    <g fill="white" opacity="0.95">
+      <path d="M680 280 L680 620 C680 680 620 720 560 720 C500 720 440 680 440 620 C440 560 500 520 560 520 C590 520 620 530 640 550 L640 380 L440 420 L440 700 C440 760 380 800 320 800 C260 800 200 760 200 700 C200 640 260 600 320 600 C350 600 380 610 400 630 L400 340 L680 280 Z"/>
+    </g>
+  </svg>`,
+
+  /**
    * Kept 'terminal' - this design is classic and works well.
    */
   terminal: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
@@ -104,38 +122,15 @@ export const ICONS = {
       </linearGradient>
     </defs>
     <rect width="1024" height="1024" rx="225" fill="url(#gradTerminal)"/>
-    <g opacity="0.95">
-      <path d="M280 420l160 92-160 92" stroke="#4AF626" stroke-width="50" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <rect x="520" y="580" width="240" height="50" rx="10" fill="#4AF626"/>
+    <g fill="none" stroke="#32D74B" stroke-width="50" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+      <path d="M320 380 L480 512 L320 644"/>
+      <path d="M520 644 H700"/>
     </g>
   </svg>`,
-
-  /**
-   * Kept 'game' - this is a good representation of the Game Center icon.
-   */
-  game: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="gradGame" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#66BB6A"/>
-        <stop offset="100%" stop-color="#388E3C"/>
-      </linearGradient>
-    </defs>
-    <rect width="1024" height="1024" rx="225" fill="url(#gradGame)"/>
-    <g opacity="0.95" fill="white">
-      <rect x="320" y="460" width="50" height="140" rx="10"/>
-      <rect x="290" y="490" width="110" height="50" rx="10"/>
-      <circle cx="680" cy="480" r="35"/>
-      <circle cx="760" cy="560" r="35"/>
-    </g>
-  </svg>`,
-
-  // ===================== Bonus Apps for Portfolio ===================== //
-
-  /**
-   * Redesigned 'skills' (like a compass/Safari)
-   * - A bar chart is very un-Apple. This uses the Safari compass metaphor.
-   * - The glyph has a soft shadow to lift it off the gradient.
-   */
+  /* Redesigned 'skills' (like a compass/Safari)
+  * - A bar chart is very un-Apple. This uses the Safari compass metaphor.
+  * - The glyph has a soft shadow to lift it off the gradient.
+  */
   skills: `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="gradSkills" x1="0%" y1="0%" x2="100%" y2="100%">

@@ -14,10 +14,10 @@ export default function MobileNavBar({ title, onBack, rightAction }) {
         onClick={onBack}
         className="flex items-center gap-2 text-blue-400 hover:text-blue-300 active:opacity-70 transition-all"
       >
-        <svg 
-          className="w-5 h-5" 
-          fill="none" 
-          stroke="currentColor" 
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
           strokeWidth={2.5}
         >

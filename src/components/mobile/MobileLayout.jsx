@@ -19,6 +19,9 @@ import Contact from '../../apps/Contact'
 import Resume from '../../apps/Resume'
 import Finder from '../../apps/Finder'
 import Settings from '../../apps/Settings'
+import Gallery from '../../apps/Gallery'
+import Achievements from '../../apps/Achievements'
+import Music from '../../apps/Music'
 
 export default function MobileLayout() {
   const [isLocked, setIsLocked] = useState(true);
@@ -40,7 +43,7 @@ export default function MobileLayout() {
     window.addEventListener('settingsChanged', handleSettingsChange);
     return () => window.removeEventListener('settingsChanged', handleSettingsChange);
   }, []);
-  
+
   const appComponents = {
     bio: About,
     about: About,
@@ -53,31 +56,34 @@ export default function MobileLayout() {
     resume: Resume,
     finder: Finder,
     settings: Settings,
+    gallery: Gallery,
+    achievements: Achievements,
+    certificates: Achievements,
+    music: Music,
   };
 
   const handleAppClick = useCallback((app) => {
     const appData = {
       id: app.name,
       title: app.name,
-      iconKey: app.iconKey, // Add iconKey for displaying icon
+      iconKey: app.iconKey,
       component: appComponents[app.iconKey] || null,
     };
-    
-    // Add to openApps if not already open
+
     setOpenApps(prev => {
       if (prev.find(a => a.id === appData.id)) {
         return prev;
       }
       return [...prev, appData];
     });
-    
+
     setCurrentApp(appData);
     setShowAppSwitcher(false);
   }, []);
 
   const handleBackToHome = useCallback(() => {
     setCurrentApp(null);
-    setShowAppSwitcher(false); // Close app switcher too if open
+    setShowAppSwitcher(false);
   }, []);
 
   const handleCloseApp = useCallback((appId) => {
@@ -112,19 +118,18 @@ export default function MobileLayout() {
 
   // Swipe Gestures
   useSwipeGesture({
-    onSwipeUp: () => {
-      // Disabled: App switcher on swipe up removed
-      // Users can still access app switcher via AssistiveTouch if needed
-    },
+    onSwipeUp: () => { },
     onSwipeRight: () => {
-      // Swipe from left: Go back to home (only when in app)
       if (currentApp && !showAppSwitcher) {
         handleBackToHome();
       }
     },
-    enabled: !isLocked && !showAppSwitcher, // Disable during lock screen and app switcher
-    threshold: 80, // Require more deliberate swipe
+    enabled: !isLocked && !showAppSwitcher,
+    threshold: 80,
   });
+
+  // Filter dock apps for mobile (exclude terminal)
+  const mobileDockApps = DOCK_APPS.filter(app => app && app.id !== 'terminal').slice(0, 4);
 
   return (
     <div className="mobile-layout min-h-screen min-w-screen relative text-white overflow-hidden fixed inset-0">
@@ -151,7 +156,6 @@ export default function MobileLayout() {
           <div className="flex-1 overflow-hidden relative">
             <AnimatePresence mode="wait">
               {currentApp ? (
-                /* Full Screen App View */
                 <MobileAppView
                   app={currentApp}
                   onClose={handleBackToHome}
@@ -168,7 +172,6 @@ export default function MobileLayout() {
                   )}
                 </MobileAppView>
               ) : (
-                /* Home Screen */
                 <motion.div
                   key="home"
                   initial={{ opacity: 0 }}
@@ -182,73 +185,59 @@ export default function MobileLayout() {
             </AnimatePresence>
           </div>
 
-          {/* Mobile Dock - Simplified */}
-          {!currentApp && (
-            <motion.div
-              initial={{ y: 100 }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="pb-6 px-4 relative z-20"
-            >
-              <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-2xl">
-                <div className="flex items-center justify-around gap-2">
-                  {DOCK_APPS.slice(0, 4).map((app) => (
-                    <button
-                      key={app.id}
-                      onClick={() => handleAppClick(app)}
-                      className="flex flex-col items-center active:scale-90 transition-transform"
-                    >
-                      <div 
-                        className="w-14 h-14 rounded-2xl shadow-lg overflow-hidden"
-                        dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] || ICONS.folder }}
-                      />
-                    </button>
-                  ))}
-                </div>
+          {/* Mobile Dock */}
+          <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="pb-6 px-4 relative z-20"
+          >
+            <div className="bg-white/10 backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-2xl">
+              <div className="flex items-center justify-around gap-2">
+                {/* Home Button */}
+                {currentApp && (
+                  <button
+                    onClick={handleBackToHome}
+                    className="flex flex-col items-center active:scale-90 transition-transform"
+                  >
+                    <div className="w-14 h-14 rounded-2xl shadow-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                    </div>
+                  </button>
+                )}
+
+                {/* Regular Dock Apps */}
+                {mobileDockApps.map((app) => (
+                  <button
+                    key={app.id}
+                    onClick={() => handleAppClick(app)}
+                    className="flex flex-col items-center active:scale-90 transition-transform"
+                  >
+                    <div
+                      className="w-14 h-14 rounded-2xl shadow-lg overflow-hidden"
+                      dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] || ICONS.folder }}
+                    />
+                  </button>
+                ))}
+
+                {/* Back Button (when in app) */}
+                {currentApp && (
+                  <button
+                    onClick={handleBackToHome}
+                    className="flex flex-col items-center active:scale-90 transition-transform"
+                  >
+                    <div className="w-14 h-14 rounded-2xl shadow-lg bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </div>
+                  </button>
+                )}
               </div>
-            </motion.div>
-          )}
-
-          {/* App Switcher Button - Floating when app is open */}
-          {currentApp && openApps.length > 0 && (
-            <>
-              {/* Swipe Up Indicator - Bottom edge */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="fixed bottom-2 left-1/2 -translate-x-1/2 z-30 pointer-events-none"
-              >
-                <div className="flex flex-col items-center gap-1">
-                  <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                    className="w-12 h-1 bg-white/40 rounded-full"
-                  ></motion.div>
-                  <span className="text-xs text-white/50 font-medium">Swipe up</span>
-                </div>
-              </motion.div>
-
-              {/* App Switcher Button - Alternative to swipe */}
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                onClick={handleToggleAppSwitcher}
-                className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-blue-500 hover:bg-blue-600 active:scale-95 shadow-2xl flex items-center justify-center transition-all"
-              >
-                <svg 
-                  className="w-6 h-6 text-white" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                </svg>
-              </motion.button>
-            </>
-          )}
+            </div>
+          </motion.div>
         </motion.div>
       )}
 
@@ -265,15 +254,15 @@ export default function MobileLayout() {
         )}
       </AnimatePresence>
 
-      {/* AssistiveTouch - Mobile specific actions */}
+      {/* AssistiveTouch */}
       {!isLocked && settings.showAssistiveTouch && (
         <AssistiveTouch
           isMobileApp={true}
           onHome={handleBackToHome}
           onBack={handleBackToHome}
           onFullscreen={handleFullscreen}
-          onDarkMode={() => {}}
-          onLightMode={() => {}}
+          onDarkMode={() => { }}
+          onLightMode={() => { }}
         />
       )}
     </div>

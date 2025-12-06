@@ -9,16 +9,16 @@ export default function About() {
           <div className="relative">
             {/* Gradient Background */}
             <div className="h-32 bg-gradient-to-br from-[#5E5CE6] to-[#007AFF]"></div>
-            
+
             {/* Profile Section */}
             <div className="px-6 pb-6">
               {/* Profile Image */}
               <div className="relative -mt-16 mb-4">
                 <div className="w-28 h-28 rounded-full bg-white p-1.5 inline-block shadow-lg">
                   <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-400 to-blue-500 flex items-center justify-center overflow-hidden">
-                    <img 
-                      src="/praveen.jpg" 
-                      alt="Praveen Kumar Reddy" 
+                    <img
+                      src="/praveen.jpg"
+                      alt="Praveen Kumar Reddy"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.style.display = 'none';
@@ -28,11 +28,11 @@ export default function About() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Name and Title */}
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">Praveen Kumar Reddy</h1>
               <p className="text-base text-gray-500 mb-3">Full Stack Developer</p>
-              
+
               {/* Company Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100">
                 <span className="text-sm">💼</span>
@@ -88,7 +88,7 @@ export default function About() {
               </div>
               <h2 className="text-xl font-semibold text-gray-900">Core Expertise</h2>
             </div>
-            
+
             {/* iOS List Style */}
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
@@ -100,7 +100,7 @@ export default function About() {
                   <div className="text-xs text-gray-500">React, Redux, Tailwind CSS</div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm flex-shrink-0">
                   ⚙️
@@ -110,7 +110,7 @@ export default function About() {
                   <div className="text-xs text-gray-500">Node.js, Express, MongoDB</div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white text-sm flex-shrink-0">
                   🔄
@@ -120,7 +120,7 @@ export default function About() {
                   <div className="text-xs text-gray-500">WebSockets, Socket.io</div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-sm flex-shrink-0">
                   ☁️
@@ -143,7 +143,7 @@ export default function About() {
               </div>
               <h2 className="text-xl font-semibold text-gray-900">Get in Touch</h2>
             </div>
-            
+
             <div className="space-y-2">
               <a href="mailto:praveen.220302@gmail.com" className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center flex-shrink-0">
@@ -154,7 +154,7 @@ export default function About() {
                   <div className="text-[15px] text-blue-500 truncate">praveen.220302@gmail.com</div>
                 </div>
               </a>
-              
+
               <a href="tel:+919701711749" className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 active:bg-gray-100 transition-colors">
                 <div className="w-8 h-8 rounded-lg bg-green-500 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg">📱</span>
@@ -164,7 +164,7 @@ export default function About() {
                   <div className="text-[15px] text-gray-900">+91 9701711749</div>
                 </div>
               </a>
-              
+
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-gray-50">
                 <div className="w-8 h-8 rounded-lg bg-purple-500 flex items-center justify-center flex-shrink-0">
                   <span className="text-lg">📍</span>

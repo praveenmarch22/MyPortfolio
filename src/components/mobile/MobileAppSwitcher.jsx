@@ -2,21 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ICONS } from '../../utils/icons';
 
-export default function MobileAppSwitcher({ 
-  openApps, 
+export default function MobileAppSwitcher({
+  openApps,
   currentApp,
-  onSelectApp, 
-  onCloseApp, 
-  onClose 
+  onSelectApp,
+  onCloseApp,
+  onClose
 }) {
   return (
     <motion.div
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
-      transition={{ 
-        type: 'spring', 
-        stiffness: 400, 
+      transition={{
+        type: 'spring',
+        stiffness: 400,
         damping: 40,
         mass: 1
       }}
@@ -39,10 +39,10 @@ export default function MobileAppSwitcher({
         {openApps.length === 0 ? (
           /* No Apps Open */
           <div className="flex flex-col items-center justify-center h-full text-white/50">
-            <svg 
-              className="w-24 h-24 mb-4" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-24 h-24 mb-4"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
             >
@@ -67,17 +67,16 @@ export default function MobileAppSwitcher({
               >
                 {/* App Card */}
                 <div
-                  className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-all duration-300 ${
-                    currentApp?.id === app.id 
-                      ? 'ring-4 ring-blue-500 scale-105' 
+                  className={`relative rounded-3xl overflow-hidden shadow-2xl cursor-pointer transition-all duration-300 ${currentApp?.id === app.id
+                      ? 'ring-4 ring-blue-500 scale-105'
                       : 'hover:scale-105'
-                  }`}
+                    }`}
                   style={{ height: '280px' }}
                 >
                   {/* App Preview/Screenshot */}
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-pink-600/30 backdrop-blur-sm flex items-center justify-center">
                     {/* App Icon */}
-                    <div 
+                    <div
                       className="w-20 h-20 rounded-2xl shadow-2xl overflow-hidden"
                       dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] || ICONS.folder }}
                     />
@@ -98,10 +97,10 @@ export default function MobileAppSwitcher({
                     }}
                     className="absolute top-3 right-3 w-8 h-8 rounded-full bg-red-500 hover:bg-red-600 active:scale-95 transition-all shadow-lg flex items-center justify-center z-10"
                   >
-                    <svg 
-                      className="w-4 h-4 text-white" 
-                      fill="none" 
-                      stroke="currentColor" 
+                    <svg
+                      className="w-4 h-4 text-white"
+                      fill="none"
+                      stroke="currentColor"
                       viewBox="0 0 24 24"
                       strokeWidth={3}
                     >

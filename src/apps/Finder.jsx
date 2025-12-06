@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Grid3x3, 
-  List, 
-  Search, 
-  Folder, 
-  FileText, 
-  Image, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Grid3x3,
+  List,
+  Search,
+  Folder,
+  FileText,
+  Image,
   Code,
   Star,
   Clock,
@@ -263,7 +263,7 @@ export default function Finder() {
         <div className="p-3 border-b border-gray-700/50">
           <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Favorites</h3>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
@@ -271,11 +271,10 @@ export default function Finder() {
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}
-                className={`w-full flex items-center gap-2 px-3 py-1.5 text-sm transition-colors ${
-                  currentPath[0] === item.id
+                className={`w-full flex items-center gap-2 px-3 py-1.5 text-sm transition-colors ${currentPath[0] === item.id
                     ? 'bg-blue-500/20 text-blue-300'
                     : 'text-gray-300 hover:bg-gray-700/30'
-                }`}
+                  }`}
               >
                 <Icon className="w-4 h-4" />
                 <span>{item.name}</span>
@@ -349,17 +348,15 @@ export default function Finder() {
             <div className="flex gap-1 bg-gray-700/30 rounded p-0.5">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded transition-colors ${
-                  viewMode === 'grid' ? 'bg-gray-600' : 'hover:bg-gray-700/50'
-                }`}
+                className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-gray-600' : 'hover:bg-gray-700/50'
+                  }`}
               >
                 <Grid3x3 className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded transition-colors ${
-                  viewMode === 'list' ? 'bg-gray-600' : 'hover:bg-gray-700/50'
-                }`}
+                className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-gray-600' : 'hover:bg-gray-700/50'
+                  }`}
               >
                 <List className="w-4 h-4" />
               </button>
@@ -399,11 +396,10 @@ export default function Finder() {
                     onClick={() => setSelectedItem(item)}
                     onDoubleClick={() => handleDoubleClick(item)}
                     onContextMenu={(e) => handleRightClick(e, item)}
-                    className={`group cursor-pointer p-3 rounded-lg transition-all ${
-                      selectedItem?.name === item.name
+                    className={`group cursor-pointer p-3 rounded-lg transition-all ${selectedItem?.name === item.name
                         ? 'bg-blue-500/20 ring-2 ring-blue-500/50'
                         : 'hover:bg-gray-700/30'
-                    }`}
+                      }`}
                   >
                     <div className="aspect-square bg-gray-800/50 rounded-lg mb-2 flex items-center justify-center p-6 group-hover:bg-gray-700/50 transition-colors relative">
                       {getFileIcon(item)}
@@ -448,11 +444,10 @@ export default function Finder() {
                     onClick={() => setSelectedItem(item)}
                     onDoubleClick={() => handleDoubleClick(item)}
                     onContextMenu={(e) => handleRightClick(e, item)}
-                    className={`grid grid-cols-12 gap-4 px-4 py-2 rounded-lg cursor-pointer transition-all ${
-                      selectedItem?.name === item.name
+                    className={`grid grid-cols-12 gap-4 px-4 py-2 rounded-lg cursor-pointer transition-all ${selectedItem?.name === item.name
                         ? 'bg-blue-500/20'
                         : 'hover:bg-gray-700/30'
-                    }`}
+                      }`}
                   >
                     <div className="col-span-5 flex items-center gap-2">
                       <div className="w-5 h-5">
@@ -641,7 +636,7 @@ export default function Finder() {
                 </div>
                 <h4 className="font-semibold text-center">{selectedItem.name}</h4>
               </div>
-              
+
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Kind:</span>

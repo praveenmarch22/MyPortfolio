@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import ICONS from "../../utils/icons";
 import useMediaQuery from "../../hooks/useMediaQuery";
 
-export default function Dock({ apps = null, onAppClick = () => {} }) {
+export default function Dock({ apps = null, onAppClick = () => { } }) {
   const [mouseX, setMouseX] = useState(null);
   const containerRef = useRef(null);
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -36,9 +36,8 @@ export default function Dock({ apps = null, onAppClick = () => {} }) {
     <div className="w-full flex justify-center items-end pb-3">
       <div
         ref={containerRef}
-        className={`relative flex items-end ${
-          isMobile ? 'px-3 py-2 gap-2' : 'px-2 py-2 gap-[6px]'
-        } rounded-3xl`}
+        className={`relative flex items-end ${isMobile ? 'px-3 py-2 gap-2' : 'px-2 py-2 gap-[6px]'
+          } rounded-3xl`}
         style={{
           background: "rgba(255,255,255,0.10)",
           backdropFilter: "blur(40px) saturate(180%)",
@@ -102,9 +101,8 @@ function DockIcon({ app, mouseX, containerRef, onClick, isMobile }) {
     <div
       ref={iconRef}
       data-app-id={app.id}
-      className={`relative flex flex-col items-center cursor-pointer select-none ${
-        isMobile ? 'active:scale-90' : ''
-      }`}
+      className={`relative flex flex-col items-center cursor-pointer select-none ${isMobile ? 'active:scale-90' : ''
+        }`}
       onMouseEnter={() => !isMobile && setShowTooltip(true)}
       onMouseLeave={() => !isMobile && setShowTooltip(false)}
       onClick={onClick}
@@ -141,11 +139,10 @@ function DockIcon({ app, mouseX, containerRef, onClick, isMobile }) {
 
       {/* Tooltip */}
       <div
-        className={`absolute -top-12 px-3 py-1.5 rounded-md text-white text-xs font-medium whitespace-nowrap transition-all duration-200 ease-out ${
-          showTooltip && scale > 1.1
+        className={`absolute -top-12 px-3 py-1.5 rounded-md text-white text-xs font-medium whitespace-nowrap transition-all duration-200 ease-out ${showTooltip && scale > 1.1
             ? "opacity-100 -translate-y-1"
             : "opacity-0 translate-y-0"
-        }`}
+          }`}
         style={{
           background: "rgba(40,40,40,0.9)",
           backdropFilter: "blur(10px)",

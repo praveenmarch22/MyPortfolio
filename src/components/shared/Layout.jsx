@@ -21,9 +21,13 @@ import Contact from '../../apps/Contact'
 import Resume from '../../apps/Resume'
 import Finder from '../../apps/Finder'
 import Settings from '../../apps/Settings'
+import Terminal from '../../apps/Terminal'
+import Gallery from '../../apps/Gallery'
+import Achievements from '../../apps/Achievements'
+import Music from '../../apps/Music'
 import { DOCK_APPS } from '../../data/apps'
 
-export default function Layout({ children }){
+export default function Layout({ children }) {
   // Detect mobile and tablet viewports
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
@@ -88,6 +92,11 @@ function DesktopLayout() {
     resume: Resume,
     finder: Finder,
     settings: Settings,
+    terminal: Terminal,
+    gallery: Gallery,
+    achievements: Achievements,
+    certificates: Achievements,  // achievements uses 'certificates' iconKey
+    music: Music,
   };
 
   const handleAppClick = (app) => {
@@ -95,7 +104,7 @@ function DesktopLayout() {
     const isOpen = openWindows.find(w => w.id === app.name);
     if (isOpen) return;
 
-    // Open new window
+    // Open new window (it will get a higher z-index based on order)
     setOpenWindows([...openWindows, {
       id: app.name,
       title: app.name,
@@ -111,12 +120,14 @@ function DesktopLayout() {
   const handleMouseMove = (e) => {
     setMouseY(e.clientY);
     const windowHeight = window.innerHeight;
-    
-    // Show dock when mouse is near bottom (within 50px)
+
+    // Show dock when mouse is near bottom (within 100px)
+    // Show dock when mouse is very close to bottom (within 50px) to reduce interference
     if (e.clientY > windowHeight - 50) {
       setIsDockVisible(true);
-    } else {
-      // Hide dock only if there are open windows
+    } else if (e.clientY < windowHeight - 100) {
+      // Hide dock when mouse is far from bottom (above 100px zone)
+      // and there are open windows
       if (openWindows.length > 0) {
         setIsDockVisible(false);
       } else {
@@ -124,6 +135,7 @@ function DesktopLayout() {
         setIsDockVisible(true);
       }
     }
+    // Between 50px and 100px: do nothing (buffer zone)
   };
 
   const handleFullscreen = () => {
@@ -143,7 +155,7 @@ function DesktopLayout() {
   };
 
   return (
-    <div 
+    <div
       className="app-layout min-h-screen min-w-screen relative text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
@@ -157,11 +169,11 @@ function DesktopLayout() {
 
       {/* Top menu bar */}
       {!isLocked && (
-        <motion.header 
+        <motion.header
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="fixed top-0 left-0 right-0 z-20"
+          className="fixed top-0 left-0 right-0 z-10"
         >
           <MenuBar />
         </motion.header>
@@ -169,74 +181,81 @@ function DesktopLayout() {
 
       {/* Main content area - leave space for the menu bar */}
       {!isLocked && (
-        <motion.main 
+        <motion.main
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
           className="relative z-10 pt-12 pb-24 h-screen"
         >
-        {/* Home Screen with apps */}
-        <HomeScreen onAppClick={handleAppClick} />
+          {/* Home Screen with apps */}
+          <HomeScreen onAppClick={handleAppClick} />
 
-        {/* Render open windows */}
-        {openWindows.map((window) => {
-          const WindowComponent = window.component;
-          return (
-            <AppWindow
-              key={window.id}
-              appId={window.id}
-              title={window.title}
-              initialPosition={window.position}
-              onClose={() => handleCloseWindow(window.id)}
-              onMinimize={() => console.log(`Minimize ${window.id}`)}
-              onFullscreen={() => console.log(`Fullscreen ${window.id}`)}
-            >
-              {WindowComponent ? <WindowComponent /> :<div className="flex flex-col items-center justify-center text-gray-700 py-12">
-                <svg
+          {/* Render open windows */}
+          {openWindows.map((window, index) => {
+            const WindowComponent = window.component;
+            return (
+              <AppWindow
+                key={window.id}
+                appId={window.id}
+                title={window.title}
+                initialPosition={window.position}
+                windowIndex={index}
+                onClose={() => handleCloseWindow(window.id)}
+                onMinimize={() => console.log(`Minimize ${window.id}`)}
+                onFullscreen={() => console.log(`Fullscreen ${window.id}`)}
+              >
+                {WindowComponent ? <WindowComponent /> : <div className="flex flex-col items-center justify-center text-gray-700 py-12">
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="w-16 h-16 mb-4 text-gray-500"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
                     strokeWidth={1.5}
-                >
+                  >
                     <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
-                </svg>
-                <p className="text-lg font-medium">These apps are still loading…</p>
-                <p className="text-sm text-gray-500 mt-1">
+                  </svg>
+                  <p className="text-lg font-medium">These apps are still loading…</p>
+                  <p className="text-sm text-gray-500 mt-1">
                     Grab a cup of coffee ☕ — they’ll show up soon.
-                </p>
+                  </p>
                 </div>
                 }
-            </AppWindow>
-          );
-        })}
-      </motion.main>
+              </AppWindow>
+            );
+          })}
+        </motion.main>
       )}
 
       {/* Dock sits above wallpaper at the bottom */}
       {!isLocked && (
-        <motion.footer 
+        <motion.footer
           initial={{ y: 100, opacity: 0 }}
-          animate={{ 
-            y: isDockVisible ? 0 : 100, 
-            opacity: isDockVisible ? 1 : 0 
+          animate={{
+            y: isDockVisible ? 0 : 100,
+            opacity: isDockVisible ? 1 : 0
           }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed left-0 right-0 bottom-4 z-20 pointer-events-none"
+          className={`fixed left-0 right-0 bottom-0 z-10 pb-4 ${isDockVisible ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          onMouseEnter={() => setIsDockVisible(true)}
+          onMouseLeave={(e) => {
+            // Only hide if we're not near the bottom and there are open windows
+            if (e.clientY < window.innerHeight - 100 && openWindows.length > 0) {
+              setIsDockVisible(false);
+            }
+          }}
         >
-        <div className="flex justify-center pointer-events-auto">
-          {/* Pass the apps list to the Dock. Dock will show only the first 4 on mobile */}
-          <Dock
-            apps={DOCK_APPS}
-            onAppClick={handleAppClick}
-          />
-        </div>
-      </motion.footer>
+          <div className="flex justify-center">
+            <Dock
+              apps={DOCK_APPS}
+              onAppClick={handleAppClick}
+            />
+          </div>
+        </motion.footer>
       )}
 
       {/* Decorative cursor glow (non-interactive) */}
@@ -244,8 +263,10 @@ function DesktopLayout() {
 
       {/* AssistiveTouch floating button */}
       {!isLocked && settings.showAssistiveTouch && (
-        <AssistiveTouch  
+        <AssistiveTouch
           onFullscreen={handleFullscreen}
+          onHome={() => setOpenWindows([])}
+          onBack={() => setOpenWindows(prev => prev.slice(0, -1))}
           onDarkMode={() => console.log("Dark Mode")}
           onLightMode={() => console.log("Light Mode")}
           onClose={() => console.log("Close")}

@@ -6,8 +6,14 @@ import useMediaQuery from '../../hooks/useMediaQuery';
 export default function HomeScreen({ onAppClick }) {
   const [currentPage, setCurrentPage] = useState(0);
   const scrollContainerRef = useRef(null);
-  const totalPages = HOME_SCREEN_APPS.length;
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Filter terminal from mobile view
+  const filteredApps = isMobile
+    ? HOME_SCREEN_APPS.map(page => page.filter(app => app && app.id !== 'terminal'))
+    : HOME_SCREEN_APPS;
+
+  const totalPages = filteredApps.length;
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -47,19 +53,17 @@ export default function HomeScreen({ onAppClick }) {
           msOverflowStyle: 'none',
         }}
       >
-        {HOME_SCREEN_APPS.map((page, pageIndex) => (
+        {filteredApps.map((page, pageIndex) => (
           <div
             key={pageIndex}
-            className={`min-w-full snap-center flex items-start justify-center ${
-              isMobile ? 'pt-8 px-6' : 'pt-20 px-8'
-            }`}
+            className={`min-w-full snap-center flex items-start justify-center ${isMobile ? 'pt-8 px-6' : 'pt-20 px-8'
+              }`}
           >
             {/* App grid */}
-            <div className={`grid ${
-              isMobile 
-                ? 'grid-cols-4 gap-6' 
-                : 'grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8'
-            } max-w-6xl`}>
+            <div className={`grid ${isMobile
+              ? 'grid-cols-4 gap-6'
+              : 'grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8'
+              } max-w-6xl`}>
               {page.map((app) => (
                 <AppIcon
                   key={app.id}
@@ -73,9 +77,8 @@ export default function HomeScreen({ onAppClick }) {
       </div>
 
       {/* Page indicators - positioned above dock */}
-      <div className={`flex justify-center items-center gap-2 pb-2 ${
-        isMobile ? 'mb-4' : 'mb-24'
-      }`}>
+      <div className={`flex justify-center items-center gap-2 pb-2 ${isMobile ? 'mb-4' : 'mb-24'
+        }`}>
         {Array.from({ length: totalPages }).map((_, index) => (
           <button
             key={index}
@@ -85,8 +88,8 @@ export default function HomeScreen({ onAppClick }) {
               width: currentPage === index ? '24px' : '8px',
               height: '8px',
               borderRadius: '4px',
-              backgroundColor: currentPage === index 
-                ? 'rgba(255, 255, 255, 0.9)' 
+              backgroundColor: currentPage === index
+                ? 'rgba(255, 255, 255, 0.9)'
                 : 'rgba(255, 255, 255, 0.4)',
               border: '1px solid rgba(255, 255, 255, 0.3)',
               cursor: 'pointer',
@@ -121,20 +124,18 @@ function AppIcon({ app, onClick }) {
     >
       {/* App icon */}
       <div
-        className={`${
-          isMobile ? 'w-14 h-14' : 'w-16 h-16 md:w-20 md:h-20'
-        } rounded-2xl mb-2 shadow-lg transition-all duration-200`}
+        className={`${isMobile ? 'w-14 h-14' : 'w-16 h-16 md:w-20 md:h-20'
+          } rounded-2xl mb-2 shadow-lg transition-all duration-200`}
         style={{
           filter: isHovered ? 'brightness(1.1)' : 'brightness(1)',
         }}
         dangerouslySetInnerHTML={{ __html: ICONS[app.iconKey] }}
       />
-      
+
       {/* App name */}
       <span
-        className={`${
-          isMobile ? 'text-xs' : 'text-xs md:text-sm'
-        } font-medium text-white text-center max-w-20`}
+        className={`${isMobile ? 'text-xs' : 'text-xs md:text-sm'
+          } font-medium text-white text-center max-w-20`}
         style={{
           textShadow: '0 1px 3px rgba(0, 0, 0, 0.8)',
         }}
